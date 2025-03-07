@@ -1,0 +1,882 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ระบบนักเรียน</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600&display=swap');
+        
+        :root {
+            --primary: #4361ee;
+            --secondary: #3a0ca3;
+            --accent: #4cc9f0;
+            --light: #f8f9fa;
+            --dark: #212529;
+            --radius: 12px;
+            --shadow: 0 6px 12px rgba(0,0,0,0.08);
+            --hover: translateY(-5px);
+            --transition: all 0.3s ease;
+            
+            /* Event Colors */
+            --green: #00cc66;
+            --yellow: #ffcc00;
+            --orange: #ff9966;
+            --pink: #ff6699;
+            --blue: #0d6efd;
+        }
+        
+        * {
+            box-sizing: border-box;
+            transition: var(--transition);
+        }
+        
+        body {
+            font-family: 'Prompt', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-image: linear-gradient(135deg, var(--accent), var(--secondary));
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            color: var(--dark);
+        }
+        
+        .container {
+            display: flex;
+            width: 95%;
+            max-width: 1200px;
+            background: white;
+            border-radius: var(--radius);
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            margin: 20px 0;
+        }
+        
+        /* Profile Section */
+        .profile-section {
+            flex: 1;
+            padding: 30px;
+            background: var(--light);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .profile-img-container {
+            position: relative;
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            overflow: hidden;
+            margin-bottom: 15px;
+            box-shadow: var(--shadow);
+            border: 3px solid var(--primary);
+        }
+        
+        .profile-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .edit-profile-btn {
+            position: absolute;
+            bottom: 5px;
+            right: 5px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+        
+        .profile-details {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        .info-box {
+            background: white;
+            border-radius: var(--radius);
+            padding: 15px;
+            margin: 5px 0;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+        
+        .info-box:hover {
+            transform: var(--hover);
+            box-shadow: var(--shadow);
+        }
+        
+        .info-box i {
+            font-size: 20px;
+            color: var(--primary);
+            margin-right: 15px;
+            width: 25px;
+            text-align: center;
+        }
+        
+        /* Schedule Section */
+        .schedule-section {
+            background: white;
+            border-radius: var(--radius);
+            padding: 20px;
+            margin-top: 30px;
+            width: 100%;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+        
+        .section-title {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            color: var(--primary);
+            font-weight: 500;
+        }
+        
+        .upload-btn, .logout-btn {
+            display: flex;
+            align-items: center;
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 14px;
+            gap: 8px;
+            transition: all 0.3s ease;
+        }
+        
+        .upload-btn:hover, .logout-btn:hover {
+            background: var(--secondary);
+            transform: scale(1.05);
+        }
+        
+        .timetable-container {
+            width: 100%;
+            position: relative;
+            min-height: 200px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: var(--light);
+            border-radius: var(--radius);
+            overflow: hidden;
+        }
+        
+        .timetable-img {
+            max-width: 100%;
+            max-height: 300px;
+            border-radius: var(--radius);
+            object-fit: contain;
+        }
+        
+        .no-timetable {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: #6c757d;
+            padding: 40px;
+            text-align: center;
+        }
+        
+        .no-timetable i {
+            font-size: 48px;
+            margin-bottom: 15px;
+        }
+        
+        .logout-btn {
+            margin-top: 30px;
+        }
+        
+        /* Calendar Section */
+        .calendar-section {
+            flex: 1.2;
+            padding: 30px;
+            background: white;
+        }
+        
+        .month-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .year {
+            font-size: 32px;
+            font-weight: bold;
+            color: var(--primary);
+        }
+        
+        .month {
+            font-size: 24px;
+            color: var(--secondary);
+        }
+        
+        .month-navigation {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .month-nav-btn {
+            background: var(--light);
+            border: none;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            color: var(--primary);
+        }
+        
+        .month-nav-btn:hover {
+            background: var(--primary);
+            color: white;
+            transform: scale(1.1);
+        }
+        
+        .calendar {
+            width: 100%;
+            border-collapse: collapse;
+            table-layout: fixed;
+        }
+        
+        .calendar th {
+            background: var(--light);
+            padding: 12px 8px;
+            text-align: center;
+            font-size: 14px;
+            color: var(--dark);
+            border-radius: 8px 8px 0 0;
+        }
+        
+        .calendar td {
+            height: 80px;
+            vertical-align: top;
+            padding: 8px;
+            border: 1px solid #e0e0e0;
+            font-size: 14px;
+            position: relative;
+        }
+        
+        .calendar td:hover {
+            background: var(--light);
+            transform: scale(0.98);
+        }
+        
+        .date-number {
+            position: absolute;
+            top: 5px;
+            left: 8px;
+            font-weight: 500;
+        }
+        
+        .today .date-number {
+            background-color: var(--primary);
+            color: white;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+        
+        .events-container {
+            margin-top: 25px;
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+        
+        .event {
+            margin: 2px 0;
+            padding: 4px 6px;
+            border-radius: 5px;
+            font-size: 11px;
+            color: #333;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            cursor: pointer;
+        }
+        
+        .event:hover {
+            transform: translateX(3px);
+        }
+        
+        /* Event types */
+        .event-green {
+            background-color: rgba(0, 204, 102, 0.2);
+            border-left: 3px solid var(--green);
+        }
+        
+        .event-yellow {
+            background-color: rgba(255, 204, 0, 0.2);
+            border-left: 3px solid var(--yellow);
+        }
+        
+        .event-orange {
+            background-color: rgba(255, 153, 102, 0.2);
+            border-left: 3px solid var(--orange);
+        }
+        
+        .event-pink {
+            background-color: rgba(255, 102, 153, 0.2);
+            border-left: 3px solid var(--pink);
+        }
+        
+        .event-blue {
+            background-color: rgba(13, 110, 253, 0.2);
+            border-left: 3px solid var(--blue);
+        }
+        
+        .legend {
+            background: white;
+            padding: 15px;
+            border-radius: var(--radius);
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            box-shadow: var(--shadow);
+            margin-top: 20px;
+        }
+        
+        .legend-title {
+            font-weight: 500;
+            margin-bottom: 5px;
+            color: var(--dark);
+        }
+        
+        .legend-items {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+        }
+        
+        .legend-item {
+            display: flex;
+            align-items: center;
+            font-size: 12px;
+            padding: 5px 8px;
+            border-radius: 5px;
+            transition: transform 0.2s ease;
+        }
+        
+        .legend-item:hover {
+            transform: translateX(5px);
+            cursor: pointer;
+        }
+        
+        .legend-color {
+            width: 15px;
+            height: 15px;
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+        
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.5);
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .modal-content {
+            background-color: white;
+            margin: auto;
+            padding: 25px;
+            border-radius: var(--radius);
+            width: 90%;
+            max-width: 500px;
+            box-shadow: var(--shadow);
+            position: relative;
+            animation: modalOpen 0.3s ease;
+        }
+        
+        @keyframes modalOpen {
+            from { opacity: 0; transform: translateY(-50px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .close-modal {
+            position: absolute;
+            right: 15px;
+            top: 15px;
+            font-size: 20px;
+            cursor: pointer;
+        }
+        
+        .close-modal:hover {
+            color: var(--primary);
+            transform: rotate(90deg);
+        }
+        
+        .modal-title {
+            margin-top: 0;
+            color: var(--primary);
+            font-weight: 500;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        /* Tooltip */
+        .tooltip {
+            position: relative;
+        }
+        
+        .tooltip:hover::before {
+            content: attr(data-tooltip);
+            position: absolute;
+            bottom: calc(100% + 5px);
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 12px;
+            white-space: nowrap;
+            z-index: 10;
+        }
+        
+        .tooltip:hover::after {
+            content: '';
+            position: absolute;
+            top: -5px;
+            left: 50%;
+            transform: translateX(-50%);
+            border-width: 5px;
+            border-style: solid;
+            border-color: rgba(0, 0, 0, 0.8) transparent transparent transparent;
+            z-index: 10;
+        }
+        
+        /* ลูกเล่นเพิ่มเติม - Theme Switcher */
+        .theme-switcher {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--primary);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: var(--shadow);
+            z-index: 100;
+        }
+        
+        .theme-switcher:hover {
+            transform: rotate(180deg);
+        }
+        
+        /* Dark Theme */
+        .dark-theme {
+            --light: #2a2a2a;
+            --dark: #f8f9fa;
+            color: var(--dark);
+        }
+        
+        .dark-theme body {
+            background-image: linear-gradient(135deg, #1f1f1f, #333333);
+        }
+        
+        .dark-theme .container {
+            background: #333;
+        }
+        
+        .dark-theme .profile-section,
+        .dark-theme .calendar td:hover {
+            background: #2a2a2a;
+        }
+        
+        .dark-theme .info-box,
+        .dark-theme .schedule-section,
+        .dark-theme .calendar-section,
+        .dark-theme .legend,
+        .dark-theme .modal-content,
+        .dark-theme .event-detail-content {
+            background: #333;
+            color: var(--dark);
+        }
+        
+        .dark-theme .calendar th {
+            background: #222;
+        }
+        
+        .dark-theme .calendar td {
+            border-color: #444;
+        }
+        
+        /* Responsive design */
+        @media (max-width: 992px) {
+            .container {
+                flex-direction: column;
+                width: 95%;
+            }
+            
+            .profile-section, .calendar-section {
+                width: 100%;
+            }
+            
+            .legend-items {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .profile-section, .calendar-section {
+                padding: 20px 15px;
+            }
+            
+            .year {
+                font-size: 26px;
+            }
+            
+            .month {
+                font-size: 20px;
+            }
+            
+            .calendar th {
+                padding: 8px 4px;
+                font-size: 12px;
+            }
+            
+            .calendar td {
+                height: 60px;
+                padding: 4px;
+                font-size: 12px;
+            }
+            
+            .event {
+                font-size: 9px;
+                padding: 2px 4px;
+            }
+
+            /* CSS เพิ่มเติมที่ควรเพิ่มลงในส่วน <style> ของเอกสาร */
+
+/* ปรับแต่งรูปตารางเรียน */
+.timetable-img {
+    max-width: 100%;
+    max-height: 400px;
+    border-radius: var(--radius);
+    object-fit: contain;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    cursor: pointer;
+}
+
+.timetable-img:hover {
+    transform: scale(1.02);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Modal แสดงรูปขยาย */
+#timetableModal .modal-content {
+    max-width: 90%;
+    max-height: 90vh;
+    padding: 20px;
+    overflow: auto;
+}
+
+#enlargedTimetable {
+    max-width: 100%;
+    max-height: 80vh;
+    object-fit: contain;
+    border-radius: var(--radius);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* เพิ่มปุ่มขยาย/ย่อภาพในโหมดเต็มจอ */
+.zoom-controls {
+    display: flex;
+    justify-content: center;
+    margin-top: 15px;
+    gap: 15px;
+}
+
+.zoom-btn {
+    background: var(--primary);
+    color: white;
+    border: none;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: var(--shadow);
+    transition: all 0.2s ease;
+}
+
+.zoom-btn:hover {
+    background: var(--secondary);
+    transform: scale(1.1);
+}
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- ส่วนโปรไฟล์ -->
+        <div class="profile-section">
+            <div class="profile-img-container">
+                <img id="profileImage" class="profile-img" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z' fill='%23cccccc'/%3E%3C/svg%3E" alt="รูปนักเรียน">
+                <button class="edit-profile-btn tooltip" data-tooltip="เปลี่ยนรูปโปรไฟล์">
+                    <i class="fas fa-camera"></i>
+                </button>
+            </div>
+            
+            <div class="profile-details">
+                <div class="info-box">
+                    <i class="fas fa-graduation-cap"></i>
+                    <span id="classInfo">ชั้น ม.6/1 เลขที่ 1</span>
+                </div>
+                
+                <div class="info-box">
+                    <i class="fas fa-user"></i>
+                    <span id="studentName">นายชา คุณชาชิว</span>
+                </div>
+                
+                <div class="info-box">
+                    <i class="fas fa-id-card"></i>
+                    <span id="studentId">เลขประจำตัว 61074</span>
+                </div>
+            </div>
+            
+<!-- ส่วนตารางเรียน -->
+<div class="schedule-section">
+    <div class="section-title">
+        <h3>ตารางเรียน</h3>
+    </div>
+    
+    <div class="timetable-container" id="timetableContainer">
+        <div class="no-timetable" id="noTimetable" style="display: none;">
+            <i class="fas fa-calendar-alt"></i>
+            <p>ไม่พบตารางเรียน</p>
+            <p class="upload-instruction">โปรดติดต่อฝ่ายทะเบียน</p>
+        </div>
+        <img id="timetableImage" src="ตารางเรียน.png" class="timetable-img" alt="ตารางเรียน" style="cursor: pointer;">
+    </div>
+</div>
+
+<!-- Modal แสดงรูปตารางเรียนขยาย -->
+<div class="modal" id="timetableModal">
+    <div class="modal-content" style="max-width: 90%; padding: 15px;">
+        <span class="close-modal" id="closeTimetableModal">&times;</span>
+        <h3 class="modal-title">ตารางเรียน</h3>
+        <div style="text-align: center;">
+            <img id="enlargedTimetable" src="ตารางเรียน.png" style="max-width: 100%; max-height: 80vh;" alt="ตารางเรียนขยาย">
+        </div>
+    </div>
+</div>
+            
+            <!-- เพิ่มปุ่มออกจากระบบ -->
+            <button class="logout-btn tooltip" data-tooltip="ออกจากระบบ" id="logoutBtn">
+                <i class="fas fa-sign-out-alt"></i> ออกจากระบบ
+            </button>
+        </div>
+        
+        <!-- ส่วนปฏิทิน -->
+        <div class="calendar-section">
+            <div class="month-header">
+                <div>
+                    <div class="year">2025</div>
+                    <div class="month" id="currentMonth">มีนาคม</div>
+                </div>
+                <div class="month-navigation">
+                    <button class="month-nav-btn tooltip" id="prevMonth" data-tooltip="เดือนก่อนหน้า">
+                        <i class="fas fa-chevron-left"></i>
+                    </button>
+                    <button class="month-nav-btn tooltip" id="nextMonth" data-tooltip="เดือนถัดไป">
+                        <i class="fas fa-chevron-right"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <table class="calendar" id="calendarTable">
+                <thead>
+                    <tr>
+                        <th>อาทิตย์</th>
+                        <th>จันทร์</th>
+                        <th>อังคาร</th>
+                        <th>พุธ</th>
+                        <th>พฤหัสบดี</th>
+                        <th>ศุกร์</th>
+                        <th>เสาร์</th>
+                    </tr>
+                </thead>
+                <tbody id="calendarBody">
+                    <!-- Calendar cells will be generated here -->
+                </tbody>
+            </table>
+            
+            <!-- Legend for events -->
+            <div class="legend">
+                <div class="legend-title">กิจกรรมในเดือนนี้</div>
+                <div class="legend-items">
+                    <div class="legend-item event-green" data-event="3 มี.ค. - ส่งคลิปชีวะ">
+                        <div class="legend-color" style="background-color: var(--green);"></div>
+                        <span>3 มี.ค. - ส่งคลิปชีวะ</span>
+                    </div>
+                    <div class="legend-item event-green" data-event="3 มี.ค. - ส่งสมุดสังคม">
+                        <div class="legend-color" style="background-color: var(--green);"></div>
+                        <span>3 มี.ค. - ส่งสมุดสังคม</span>
+                    </div>
+                    <div class="legend-item event-yellow" data-event="4-6 มี.ค. - สอบปลายภาค">
+                        <div class="legend-color" style="background-color: var(--yellow);"></div>
+                        <span>4-6 มี.ค. - สอบปลายภาค</span>
+                    </div>
+                    <div class="legend-item event-orange" data-event="9-10 มี.ค. - สอบ ALEVAL">
+                        <div class="legend-color" style="background-color: var(--orange);"></div>
+                        <span>9-10 มี.ค. - สอบ ALEVAL</span>
+                    </div>
+                    <div class="legend-item event-pink" data-event="31 มี.ค. - รับประกาศนียบัตร">
+                        <div class="legend-color" style="background-color: var(--pink);"></div>
+                        <span>31 มี.ค. - รับประกาศนียบัตร</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Settings Modal -->
+    <div class="modal" id="settingsModal">
+        <div class="modal-content">
+            <span class="close-modal" id="closeSettingsModal">&times;</span>
+            <h3 class="modal-title">ตั้งค่า</h3>
+            
+            <div class="settings-section">
+                <h4>การแจ้งเตือน</h4>
+                <div class="settings-option">
+                    <label class="switch">
+                        <input type="checkbox" id="notificationToggle" checked>
+                        <span class="slider round"></span>
+                    </label>
+                    <span>การแจ้งเตือนกิจกรรม</span>
+                </div>
+                <div class="settings-option">
+                    <label class="switch">
+                        <input type="checkbox" id="soundToggle" checked>
+                        <span class="slider round"></span>
+                    </label>
+                    <span>เสียงแจ้งเตือน</span>
+                </div>
+            </div>
+            
+            <div class="settings-section">
+                <h4>การแสดงผล</h4>
+                <div class="settings-option">
+                    <label class="switch">
+                        <input type="checkbox" id="darkModeToggle">
+                        <span class="slider round"></span>
+                    </label>
+                    <span>โหมดกลางคืน</span>
+                </div>
+                <div class="settings-option">
+                    <label for="fontSizeSelect">ขนาดตัวอักษร:</label>
+                    <select id="fontSizeSelect">
+                        <option value="small">เล็ก</option>
+                        <option value="medium" selected>กลาง</option>
+                        <option value="large">ใหญ่</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="settings-actions">
+                <button class="save-settings-btn" id="saveSettings">บันทึกการตั้งค่า</button>
+                <button class="reset-settings-btn" id="resetSettings">คืนค่าเริ่มต้น</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Add Event Modal -->
+    <div class="modal" id="addEventModal">
+        <div class="modal-content">
+            <span class="close-modal" id="closeEventModal">&times;</span>
+            <h3 class="modal-title">เพิ่มกิจกรรมใหม่</h3>
+            
+            <form id="eventForm">
+                <div class="form-group">
+                    <label for="eventTitle">ชื่อกิจกรรม:</label>
+                    <input type="text" id="eventTitle" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="eventDate">วันที่:</label>
+                    <input type="date" id="eventDate" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="eventColor">สี:</label>
+                    <select id="eventColor" required>
+                        <option value="green">สีเขียว</option>
+                        <option value="yellow">สีเหลือง</option>
+                        <option value="orange">สีส้ม</option>
+                        <option value="pink">สีชมพู</option>
+                        <option value="purple">สีม่วง</option>
+                        <option value="blue">สีฟ้า</option>
+                    </select>
+                    <div class="color-preview" id="colorPreview"></div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="eventDescription">รายละเอียด (ไม่บังคับ):</label>
+                    <textarea id="eventDescription" rows="3"></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label class="switch">
+                        <input type="checkbox" id="eventReminder" checked>
+                        <span class="slider round"></span>
+                    </label>
+                    <span>แจ้งเตือนก่อนกิจกรรม</span>
+                </div>
+                
+                <div class="modal-actions">
+                    <button type="button" class="cancel-btn" id="cancelEvent">ยกเลิก</button>
+                    <button type="submit" class="add-btn">เพิ่มกิจกรรม</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <!-- JavaScript -->
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+    <script src="script.js"></script>
+</body>
+</html>
