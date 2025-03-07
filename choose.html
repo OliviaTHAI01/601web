@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>เลือกการเข้าสู่ระบบ</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Prompt', Arial, sans-serif;
+            text-align: center;
+            background: url('background.jpg') no-repeat center center/cover; 
+            position: relative;
+        }
+        .logo-container {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            display: flex;
+            align-items: center;
+        }
+        .logo {
+            width: 100px;
+            height: 100px;
+            background: url('logo.png') no-repeat center center/contain;
+            margin-right: 15px;
+        }
+        .title {
+            font-size: 2rem;
+            font-weight: bold;
+            color: white;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+        .container {
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        .choice-container {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            max-width: 400px;
+        }
+        .choice-container h2 {
+            color: #0056b3;
+            margin-bottom: 30px;
+        }
+        .button {
+            background: #0056b3;
+            color: white;
+            font-size: 1.2rem;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 10px;
+            text-decoration: none;
+            transition: background 0.3s;
+        }
+        .button:hover {
+            background: #003d82;
+        }
+    </style>
+</head>
+<body>
+    <div class="logo-container">
+        <div class="logo"></div>
+        <div class="title">KOH SAMUI SCHOOL</div>
+    </div>
+
+    <div class="container">
+        <div class="choice-container">
+            <h2>ระบบการเข้าใช้งาน</h2>
+            <a href="login.html" class="button">เข้าสู่ระบบ</a>
+            <a href="register.html" class="button">ลงทะเบียน</a>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>เข้าสู่ระบบ</title>
+    <style>
+        body {
+            font-family: 'Prompt', Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: url('background.jpg') no-repeat center center/cover;
+            min-height: 100vh;
+        }
+        .logo-container {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            display: flex;
+            align-items: center;
+        }
+        .logo {
+            width: 100px;
+            height: 100px;
+            background: url('logo.png') no-repeat center center/contain;
+            margin-right: 15px;
+        }
+        .title {
+            font-size: 2rem;
+            font-weight: bold;
+            color: white;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+        .login-container {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            width: 350px;
+            text-align: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin: 120px auto 50px;
+        }
+        .school-logo {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 20px;
+        }
+        h2 {
+            color: #0066cc;
+            margin-bottom: 20px;
+        }
+        .input-group {
+            margin-bottom: 15px;
+            text-align: left;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #555;
+            font-size: 14px;
+        }
+        input {
+            width: 100%;
+            padding: 12px;
+            margin: 5px 0;
+            border-radius: 10px;
+            border: 1px solid #ddd;
+            box-sizing: border-box;
+            font-size: 14px;
+            transition: border 0.3s;
+        }
+        input:focus {
+            border-color: #0066cc;
+            outline: none;
+        }
+        .submit-btn {
+            width: 100%;
+            padding: 12px;
+            background: #0066cc;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 20px;
+            transition: background 0.3s;
+        }
+        .submit-btn:hover {
+            background: #0056b3;
+        }
+        .register-link {
+            margin-top: 20px;
+            font-size: 14px;
+            color: #555;
+        }
+        .register-link a {
+            color: #0066cc;
+            text-decoration: none;
+        }
+        .register-link a:hover {
+            text-decoration: underline;
+        }
+        .user-type-selector {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+        .user-type-btn {
+            padding: 8px 15px;
+            margin: 0 5px;
+            border: 1px solid #ddd;
+            border-radius: 20px;
+            background: white;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .user-type-btn.active {
+            background: #0066cc;
+            color: white;
+            border-color: #0066cc;
+        }
+    </style>
+</head>
+<body>
+    <div class="logo-container">
+        <div class="logo"></div>
+        <div class="title">KOH SAMUI SCHOOL</div>
+    </div>
+
+    <div class="login-container">
+        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%230066cc' d='M12 3L1 9l11 6 9-4.91V17c0 .55.45 1 1 1s1-.45 1-1v-6.34l1-1L12 3zm8.02 5L12 13 4 9l8-4.5 8 4.5zm-2 6.5V16c0 1.5-3.3 3-8 3s-8-1.5-8-3v-2.5c0 1.5 3.3 3 8 3s8-1.5 8-3z'/%3E%3C/svg%3E" alt="โรงเรียน" class="school-logo">
+        
+        <h2>เข้าสู่ระบบ</h2>
+        
+        <div class="user-type-selector">
+            <button class="user-type-btn active" onclick="setUserType('student')">นักเรียน/ครู</button>
+            <button class="user-type-btn" onclick="setUserType('admin')">ผู้ดูแลระบบ</button>
+        </div>
+        
+        <div class="input-group">
+            <label for="email">อีเมลโรงเรียน</label>
+            <input type="email" id="email" placeholder="example@school.ac.th" required>
+        </div>
+        
+        <div class="input-group">
+            <label for="password">รหัสผ่าน</label>
+            <input type="password" id="password" placeholder="รหัสผ่านของคุณ" required>
+        </div>
+        
+        <button class="submit-btn" onclick="loginUser()">เข้าสู่ระบบ</button>
+        
+        <div class="register-link" id="register-section">
+            ยังไม่มีบัญชี? <a href="register.html">ลงทะเบียน</a>
+        </div>
+    </div>
+
+    <script>
+        // ตั้งค่าข้อมูลผู้ดูแลระบบไว้ล่วงหน้า
+        const adminCredentials = {
+            email: "admin@school.ac.th",
+            password: "admin1234"
+        };
+
+        // เก็บข้อมูลในระบบเพื่อจำลองฐานข้อมูล
+        if (!localStorage.getItem('adminEmail')) {
+            localStorage.setItem('adminEmail', adminCredentials.email);
+            localStorage.setItem('adminPassword', adminCredentials.password);
+        }
+
+        // ตั้งค่าผู้ใช้จำลอง
+        if (!localStorage.getItem('users')) {
+            const mockUsers = [
+                { id: 1, name: "นายสมชาย ใจดี", email: "somchai@school.ac.th", role: "student", grade: "ม.6/1" },
+                { id: 2, name: "นางสาวสมศรี รักเรียน", email: "somsri@school.ac.th", role: "student", grade: "ม.5/2" },
+                { id: 3, name: "อาจารย์วิชัย สอนดี", email: "wichai@school.ac.th", role: "teacher", subject: "คณิตศาสตร์" }
+            ];
+            localStorage.setItem('users', JSON.stringify(mockUsers));
+        }
+
+        let currentUserType = 'student';
+
+        function setUserType(type) {
+            currentUserType = type;
+            document.querySelectorAll('.user-type-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            // ซ่อนส่วนลงทะเบียนถ้าเป็นผู้ดูแลระบบ
+            document.getElementById('register-section').style.display = 
+                type === 'admin' ? 'none' : 'block';
+        }
+
+        function loginUser() {
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            // ตรวจสอบข้อมูล
+            if (!email || !password) {
+                alert('กรุณากรอกอีเมลและรหัสผ่าน');
+                return;
+            }
+
+            if (currentUserType === 'admin') {
+    // ตรวจสอบการล็อกอินของแอดมิน
+    const adminEmail = localStorage.getItem('adminEmail');
+    const adminPassword = localStorage.getItem('adminPassword');
+    
+    if (email === adminEmail && password === adminPassword) {
+        alert('เข้าสู่ระบบแอดมินสำเร็จ');
+        // บันทึกสถานะการล็อกอิน
+        sessionStorage.setItem('loggedIn', 'true');
+        sessionStorage.setItem('userRole', 'admin');
+        // ไปยังหน้าแอดมิน
+        window.location.href = "admin-dashboard.html";
+    } else {
+        alert('อีเมลหรือรหัสผ่านแอดมินไม่ถูกต้อง');
+    }
+            } else {
+                // ตรวจสอบการล็อกอินของนักเรียน/ครู
+                const storedEmail = localStorage.getItem('email');
+                const storedPassword = localStorage.getItem('password');
+
+                if (email === storedEmail && password === storedPassword) {
+                    alert('เข้าสู่ระบบสำเร็จ');
+                    // บันทึกสถานะการล็อกอิน
+                    sessionStorage.setItem('loggedIn', 'true');
+                    sessionStorage.setItem('userRole', 'student');
+                    // ไปยังหน้าหลักหลังจากเข้าสู่ระบบ
+                    window.location.href = "dashboard.html";
+                } else {
+                    alert('อีเมลหรือรหัสผ่านไม่ถูกต้อง');
+                }
+            }
+        }
+    </script>
+</body>
+</html>

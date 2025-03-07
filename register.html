@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ลงทะเบียน</title>
+    <style>
+        body {
+            font-family: 'Prompt', Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: url('background.jpg') no-repeat center center/cover;
+            min-height: 100vh;
+        }
+        .logo-container {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            display: flex;
+            align-items: center;
+        }
+        .logo {
+            width: 100px;
+            height: 100px;
+            background: url('logo.png') no-repeat center center/contain;
+            margin-right: 15px;
+        }
+        .title {
+            font-size: 2rem;
+            font-weight: bold;
+            color: white;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+        .register-container {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            width: 350px;
+            text-align: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin: 120px auto 50px;
+        }
+        .school-logo {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 20px;
+        }
+        h2 {
+            color: #0066cc;
+            margin-bottom: 20px;
+        }
+        .input-group {
+            margin-bottom: 15px;
+            text-align: left;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #555;
+            font-size: 14px;
+        }
+        input {
+            width: 100%;
+            padding: 12px;
+            margin: 5px 0;
+            border-radius: 10px;
+            border: 1px solid #ddd;
+            box-sizing: border-box;
+            font-size: 14px;
+            transition: border 0.3s;
+        }
+        input:focus {
+            border-color: #0066cc;
+            outline: none;
+        }
+        .file-input {
+            display: none;
+        }
+        .upload-btn {
+            display: inline-block;
+            background: #f0f0f0;
+            color: #333;
+            padding: 10px 15px;
+            border-radius: 10px;
+            cursor: pointer;
+            margin: 10px 0;
+            font-size: 14px;
+            transition: background 0.3s;
+        }
+        .upload-btn:hover {
+            background: #e0e0e0;
+        }
+        .profile-preview {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin: 10px auto;
+            border: 3px solid #0066cc;
+            background: #f0f0f0;
+        }
+        .submit-btn {
+            width: 100%;
+            padding: 12px;
+            background: #0066cc;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 20px;
+            transition: background 0.3s;
+        }
+        .submit-btn:hover {
+            background: #0056b3;
+        }
+        .login-link {
+            margin-top: 20px;
+            font-size: 14px;
+            color: #555;
+        }
+        .login-link a {
+            color: #0066cc;
+            text-decoration: none;
+        }
+        .login-link a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="logo-container">
+        <div class="logo"></div>
+        <div class="title">KOH SAMUI SCHOOL</div>
+    </div>
+
+    <div class="register-container">
+        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%230066cc' d='M12 3L1 9l11 6 9-4.91V17c0 .55.45 1 1 1s1-.45 1-1v-6.34l1-1L12 3zm8.02 5L12 13 4 9l8-4.5 8 4.5zm-2 6.5V16c0 1.5-3.3 3-8 3s-8-1.5-8-3v-2.5c0 1.5 3.3 3 8 3s8-1.5 8-3z'/%3E%3C/svg%3E" alt="โรงเรียน" class="school-logo">
+        
+        <h2>ลงทะเบียนนักเรียนใหม่</h2>
+        
+        <div class="input-group">
+            <label for="firstName">ชื่อ</label>
+            <input type="text" id="firstName" placeholder="กรอกชื่อของคุณ" required>
+        </div>
+        
+        <div class="input-group">
+            <label for="lastName">นามสกุล</label>
+            <input type="text" id="lastName" placeholder="กรอกนามสกุลของคุณ" required>
+        </div>
+        
+        <div class="input-group">
+            <label for="class">ชั้นเรียน</label>
+            <input type="text" id="class" placeholder="เช่น ม.6/1" required>
+        </div>
+        
+        <div class="input-group">
+            <label for="studentId">เลขประจำตัวนักเรียน</label>
+            <input type="text" id="studentId" placeholder="เช่น 61074" required>
+        </div>
+        
+        <div class="input-group">
+            <label for="email">อีเมลโรงเรียน</label>
+            <input type="email" id="email" placeholder="example@school.ac.th" required>
+        </div>
+        
+        <div class="input-group">
+            <label for="password">รหัสผ่าน</label>
+            <input type="password" id="password" placeholder="อย่างน้อย 8 ตัวอักษร" required>
+        </div>
+        
+        <!-- อัปโหลดรูปโปรไฟล์ -->
+        <input type="file" id="profilePicInput" accept="image/*" class="file-input">
+        <img id="previewImage" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23cccccc' d='M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z'/%3E%3C/svg%3E" alt="โปรไฟล์" class="profile-preview">
+        <label for="profilePicInput" class="upload-btn">เลือกรูปโปรไฟล์</label>
+        
+        <button class="submit-btn" onclick="registerUser()">ลงทะเบียน</button>
+        
+        <div class="login-link">
+            มีบัญชีอยู่แล้ว? <a href="login.html">เข้าสู่ระบบ</a>
+        </div>
+    </div>
+
+    <script>
+        // แสดงตัวอย่างรูปโปรไฟล์
+        document.getElementById('profilePicInput').addEventListener('change', function(event) {
+            const reader = new FileReader();
+            reader.onload = function() {
+                document.getElementById('previewImage').src = reader.result;
+            };
+            reader.readAsDataURL(event.target.files[0]);
+        });
+
+        function registerUser() {
+            const firstName = document.getElementById('firstName').value;
+            const lastName = document.getElementById('lastName').value;
+            const userClass = document.getElementById('class').value;
+            const studentId = document.getElementById('studentId').value;
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const profilePic = document.getElementById('previewImage').src;
+
+            // ตรวจสอบข้อมูล
+            if (!firstName || !lastName || !userClass || !studentId || !email || !password) {
+                alert('กรุณากรอกข้อมูลให้ครบทุกช่อง');
+                return;
+            }
+
+            if (password.length < 8) {
+                alert('รหัสผ่านต้องมีอย่างน้อย 8 ตัวอักษร');
+                return;
+            }
+
+            // บันทึกข้อมูลลง Local Storage
+            localStorage.setItem('firstName', firstName);
+            localStorage.setItem('lastName', lastName);
+            localStorage.setItem('class', userClass);
+            localStorage.setItem('studentId', studentId);
+            localStorage.setItem('email', email);
+            localStorage.setItem('password', password);
+            localStorage.setItem('profilePic', profilePic);
+
+            alert('ลงทะเบียนสำเร็จ');
+            window.location.href = 'login.html'; // ไปที่หน้าเข้าสู่ระบบ
+        }
+    </script>
+</body>
+</html>
