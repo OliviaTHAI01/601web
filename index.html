@@ -3,60 +3,2139 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>โรงเรียนเกาะสมุย</title>
+    <title>KOH SAMUI SCHOOL - ระบบออนไลน์โรงเรียนเกาะสมุย</title>
     <style>
-        body {
+        @import url('https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&display=swap');
+        
+        * {
             margin: 0;
             padding: 0;
-            font-family: 'Prompt', Arial, sans-serif;
-            text-align: center;
-            background: url('background.jpg') no-repeat center center/cover; 
+            box-sizing: border-box;
+            font-family: 'Prompt', sans-serif;
         }
-        .container {
-            width: 100%;
-            height: 100vh;
+        
+        :root {
+            --primary: #2563eb;
+            --primary-light: #3b82f6;
+            --primary-dark: #1d4ed8;
+            --accent: #f97316;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --info: #06b6d4;
+            --dark: #1e293b;
+            --light: #f8fafc;
+            --grey: #94a3b8;
+            --radius-sm: 8px;
+            --radius-md: 12px;
+            --radius-lg: 20px;
+            --shadow-sm: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --shadow-md: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            --transition: all 0.3s ease;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #4f46e5 0%, #3b82f6 100%);
+            min-height: 100vh;
             display: flex;
-            flex-direction: column;
             align-items: center;
             justify-content: center;
+            color: var(--dark);
+            padding: 20px;
+        }
+        
+        /* Common Components */
+        .btn {
+            background-color: var(--primary);
+            color: white;
+            padding: 14px;
+            border: none;
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            font-size: 16px;
+            width: 100%;
+            margin-top: 15px;
+            font-weight: 600;
+            transition: var(--transition);
+            box-shadow: var(--shadow-sm);
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        
+        .btn:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+        
+        .btn-secondary {
+            background-color: white;
+            color: var(--primary);
+            border: 1px solid var(--primary);
+        }
+        
+        .btn-secondary:hover {
+            background-color: #f8fafc;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--dark);
+            font-size: 15px;
+            font-weight: 500;
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 14px;
+            border: 1px solid #e2e8f0;
+            border-radius: var(--radius-md);
+            font-size: 16px;
+            transition: var(--transition);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+        
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary-light);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.3);
+        }
+        
+        /* Layout Components */
+        .header {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            display: flex;
+            align-items: center;
+            z-index: 10;
+            animation: fadeInDown 0.8s ease;
+        }
+        
+        .logo {
+            width: 45px;
+            height: 45px;
+            margin-right: 12px;
+            border-radius: 50%;
+            border: 2px solid white;
+            background-color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: var(--shadow-md);
+            transition: var(--transition);
+        }
+        
+        .logo:hover {
+            transform: scale(1.05);
+        }
+        
+        .school-name {
+            font-size: 20px;
+            font-weight: 700;
+            color: white;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+            letter-spacing: 0.5px;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            display: flex;
+            justify-content: center;
+        }
+        
+        /* Screen Components */
+        .welcome-screen {
+            text-align: center;
+            background-color: rgba(255, 255, 255, 0.95);
+            padding: 50px;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-lg);
+            max-width: 500px;
+            animation: fadeIn 0.8s ease;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+        
+        .welcome-screen h1 {
+            color: var(--primary);
+            margin-bottom: 30px;
+            font-weight: 700;
+            font-size: 28px;
+        }
+        
+        .card {
+            background-color: white;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-lg);
+            overflow: hidden;
+            width: 100%;
+            max-width: 450px;
+            padding: 40px;
+            animation: fadeIn 0.8s ease;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
             position: relative;
         }
-        .logo {
-            width: 300px;
-            height: 300px;
-            background: url('logo.png') no-repeat center center/contain;
-            margin-bottom: 20px;
+        
+        .card-icon {
+            color: var(--primary);
+            font-size: 52px;
+            text-align: center;
+            margin-bottom: 25px;
+        }
+        
+        .card h2 {
+            text-align: center;
+            color: var(--primary-dark);
+            margin-bottom: 30px;
+            font-size: 26px;
+            font-weight: 700;
+        }
+        
+        /* Dashboard Layout */
+        .dashboard {
+            width: 100%;
+            max-width: 1200px;
+            background-color: white;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-lg);
+            overflow: hidden;
+            animation: fadeIn 0.8s ease;
+        }
+        
+        .dashboard-container {
+            display: flex;
+            min-height: 600px;
+        }
+        
+        .sidebar {
+            width: 320px;
+            background-color: #f8fafc;
+            padding: 30px;
+            border-right: 1px solid #e2e8f0;
+        }
+        
+        .content {
+            flex: 1;
+            padding: 30px;
+        }
+        
+        /* Profile Components */
+        .user-profile {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .profile-img, .profile-circle {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            margin: 0 auto 20px;
+            overflow: hidden;
+            border: 3px solid var(--primary);
+            box-shadow: var(--shadow-md);
+            transition: var(--transition);
+            background-color: #f0f8ff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .profile-img:hover, .profile-circle:hover {
+            transform: scale(1.05);
+        }
+        
+        .profile-img .emoji, .profile-circle .emoji {
+            font-size: 60px;
+            line-height: 1;
+        }
+        
+        /* User Info Components */
+        .user-info {
+            margin-bottom: 30px;
+        }
+        
+        .info-item {
+            display: flex;
+            align-items: center;
+            padding: 16px;
+            border-radius: var(--radius-md);
+            margin-bottom: 8px;
+            transition: var(--transition);
+            background-color: white;
+            box-shadow: var(--shadow-sm);
+        }
+        
+        .info-item:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+        
+        .info-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background-color: #e0f2fe;
+            color: var(--primary);
+            margin-right: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+        }
+        
+        .info-text {
+            font-weight: 500;
+        }
+        
+        /* Calendar Components */
+        .calendar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 25px;
+        }
+        
+        .year {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--primary);
+            line-height: 1.2;
+        }
+        
+        .month {
+            font-size: 18px;
+            color: var(--grey);
+            font-weight: 500;
+        }
+        
+        .nav-buttons {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .nav-btn {
+            background-color: white;
+            color: var(--primary);
+            border: 1px solid #e2e8f0;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: var(--transition);
+            box-shadow: var(--shadow-sm);
+        }
+        
+        .nav-btn:hover {
+            background-color: var(--primary);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+        
+        .calendar {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 3px;
+        }
+        
+        .calendar th {
+            padding: 12px;
+            text-align: center;
+            color: var(--grey);
+            font-weight: 600;
+            font-size: 14px;
+        }
+        
+        .calendar td {
+            padding: 8px;
+            text-align: center;
+            height: 70px;
+            vertical-align: top;
+            border-radius: var(--radius-sm);
+            background-color: #f8fafc;
+            transition: var(--transition);
+            position: relative;
+        }
+        
+        .calendar td:hover {
+            background-color: #f1f5f9;
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-sm);
+        }
+        
+        .today {
+            border: 2px solid var(--primary-light);
+            background-color: #e0f2fe !important;
+        }
+        
+        .day-number {
+            display: inline-block;
+            width: 25px;
+            height: 25px;
+            line-height: 25px;
+            text-align: center;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+        
+        /* Event Components */
+        .event {
             display: block;
+            font-size: 11px;
+            padding: 3px 6px;
+            border-radius: 12px;
+            margin-bottom: 3px;
+            color: white;
+            text-align: center;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            font-weight: 500;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+            transition: var(--transition);
+        }
+        
+        .event:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .event-green { background-color: var(--success); }
+        .event-blue { background-color: var(--info); }
+        .event-orange { background-color: var(--warning); }
+        .event-red { background-color: var(--danger); }
+        .event-pink { background-color: #ec4899; }
+        
+        .month-events {
+            margin-top: 35px;
+            background-color: #f8fafc;
+            padding: 25px;
+            border-radius: var(--radius-md);
+            box-shadow: var(--shadow-sm);
+        }
+        
+        .month-events-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .month-events h3 {
+            color: var(--dark);
+            font-weight: 600;
+            font-size: 18px;
+        }
+        
+        .event-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        
+        .event-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px;
+            border-radius: var(--radius-md);
+            background-color: white;
+            transition: var(--transition);
+            box-shadow: var(--shadow-sm);
+            position: relative;
+        }
+        
+        .event-item:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+        
+        .event-item .delete-btn {
+            position: absolute;
+            right: 10px;
+            color: var(--grey);
             cursor: pointer;
+            opacity: 0;
+            transition: var(--transition);
         }
-        .title {
-            font-size: 2rem;
-            font-weight: bold;
-            color: white;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        
+        .event-item:hover .delete-btn {
+            opacity: 1;
         }
-        .button {
-            background: #0056b3;
+        
+        .event-item .delete-btn:hover {
+            color: var(--danger);
+        }
+        
+        .event-dot {
+            width: 15px;
+            height: 15px;
+            border-radius: 50%;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .event-text {
+            font-weight: 500;
+            flex: 1;
+        }
+        
+        /* Event Form Components */
+        .add-event-form {
+            display: none;
+            margin-top: 20px;
+            padding: 15px;
+            background-color: white;
+            border-radius: var(--radius-md);
+            box-shadow: var(--shadow-sm);
+        }
+        
+        .add-event-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .add-event-header h4 {
+            font-weight: 600;
+            color: var(--dark);
+        }
+        
+        .add-event-header .close-btn {
+            cursor: pointer;
+            color: var(--grey);
+            transition: var(--transition);
+        }
+        
+        .add-event-header .close-btn:hover {
+            color: var(--danger);
+        }
+        
+        .event-form-row {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        
+        .event-color-select {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        
+        .color-option {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: var(--transition);
+        }
+        
+        .color-option:hover, .color-option.selected {
+            transform: scale(1.1);
+            border-color: var(--dark);
+        }
+        
+        /* Class Card Components */
+        .class-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .class-card {
+            background-color: white;
+            border-radius: var(--radius-md);
+            box-shadow: var(--shadow-sm);
+            padding: 20px;
+            transition: var(--transition);
+            cursor: pointer;
+            border-left: 5px solid var(--primary);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .class-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-md);
+        }
+        
+        .class-card h3 {
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: var(--primary-dark);
+        }
+        
+        .class-info {
+            display: flex;
+            justify-content: space-between;
+            color: var(--grey);
+            font-size: 14px;
+        }
+        
+        .class-info div {
+            display: flex;
+            align-items: center;
+        }
+        
+        .class-info i {
+            margin-right: 5px;
+        }
+        
+        /* Tab Components */
+        .tabs {
+            display: flex;
+            border-bottom: 1px solid #e2e8f0;
+            margin-bottom: 20px;
+        }
+        
+        .tab {
+            padding: 12px 20px;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            font-weight: 500;
+            color: var(--grey);
+            transition: var(--transition);
+        }
+        
+        .tab.active {
+            color: var(--primary);
+            border-bottom-color: var(--primary);
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+        
+        /* Student List Components */
+        .student-list {
+            background-color: white;
+            border-radius: var(--radius-md);
+            box-shadow: var(--shadow-sm);
+            margin-top: 20px;
+            overflow: hidden;
+        }
+        
+        .student-list-header {
+            background-color: var(--primary);
             color: white;
-            font-size: 1.2rem;
-            padding: 12px 24px; 
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .student-list-header h3 {
+            font-weight: 600;
+        }
+        
+        .student-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        .student-table th {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 2px solid #e2e8f0;
+            color: var(--grey);
+            font-weight: 600;
+        }
+        
+        .student-table td {
+            padding: 12px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        
+        .student-table tr:last-child td {
+            border-bottom: none;
+        }
+        
+        .student-table tr:hover {
+            background-color: #f8fafc;
+        }
+        
+        /* Attendance Components */
+        .attendance-options {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .attendance-option {
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 12px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        
+        .attendance-option.present {
+            background-color: #dcfce7;
+            color: #166534;
+        }
+        
+        .attendance-option.absent {
+            background-color: #fee2e2;
+            color: #991b1b;
+        }
+        
+        .attendance-option.late {
+            background-color: #fef3c7;
+            color: #92400e;
+        }
+        
+        .attendance-option.leave {
+            background-color: #dbeafe;
+            color: #1e40af;
+        }
+        
+        .attendance-option:hover, .attendance-option.selected {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-sm);
+        }
+        
+        .attendance-option.present.selected {
+            background-color: #22c55e;
+            color: white;
+        }
+        
+        .attendance-option.absent.selected {
+            background-color: #ef4444;
+            color: white;
+        }
+        
+        .attendance-option.late.selected {
+            background-color: #f59e0b;
+            color: white;
+        }
+        
+        .attendance-option.leave.selected {
+            background-color: #3b82f6;
+            color: white;
+        }
+        
+        .leave-counter {
+            background-color: #f1f5f9;
+            border-radius: 12px;
+            padding: 2px 8px;
+            font-size: 12px;
+            color: var(--grey);
+        }
+        
+        /* Utility Classes */
+        .text-center { text-align: center; }
+        .mt-3 { margin-top: 15px; }
+        .hidden { display: none; }
+        
+        .schedule-btn {
+            background-color: var(--primary);
+            color: white;
+            padding: 8px 16px;
             border: none;
-            border-radius: 5px;
+            border-radius: 30px;
             cursor: pointer;
-            margin-top: 10px; 
-            text-decoration: none;
-            transition: background 0.3s;
+            font-size: 14px;
+            font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+            transition: var(--transition);
+            box-shadow: var(--shadow-sm);
         }
-        .button:hover {
-            background: #003d82;
+        
+        .schedule-btn:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+        
+        .schedule-btn i {
+            margin-right: 8px;
+        }
+        
+        .back-button {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background-color: rgba(255, 255, 255, 0.9);
+            color: var(--primary);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: var(--shadow-sm);
+            transition: var(--transition);
+            z-index: 5;
+        }
+        
+        .back-button:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+            background-color: var(--primary);
+            color: white;
+        }
+        
+        /* Schedule Components */
+        .schedule-title {
+            font-weight: 600;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: var(--dark);
+            font-size: 18px;
+        }
+        
+        .schedule-preview {
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            box-shadow: var(--shadow-sm);
+            transition: var(--transition);
+            margin-bottom: 20px;
+        }
+        
+        .schedule-preview:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+        
+        .schedule-image {
+            width: 100%;
+            border-radius: var(--radius-md);
+            box-shadow: var(--shadow-sm);
+            transition: var(--transition);
+            cursor: pointer;
+        }
+        
+        .schedule-image:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+                /* เพิ่มการขยายขนาดภาพ */
+.schedule-image {
+    transition: transform 0.3s ease; /* เพิ่มการเปลี่ยนแปลงที่นุ่มนวล */
+    cursor: pointer;
+}
+
+.schedule-image.expanded {
+    transform: scale(1.2); /* ขยายขนาดภาพเป็น 1.2 เท่า */
+}
+        
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+        
+        /* Screen States */
+        #welcomeScreen { display: block; }
+        #loginScreen, #registerScreen, #teacherDashboard, #dashboardScreen { display: none; }
+        
+        /* Media Queries */
+        @media (max-width: 992px) {
+            .dashboard-container {
+                flex-direction: column;
+            }
+            
+            .sidebar {
+                width: 100%;
+                border-right: none;
+                border-bottom: 1px solid #e2e8f0;
+            }
+            
+            .class-cards {
+                grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            }
+            
+            .student-table {
+                font-size: 14px;
+            }
+            
+            .attendance-options {
+                flex-wrap: wrap;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .card, .welcome-screen {
+                padding: 30px;
+            }
+            
+            .header {
+                left: 50%;
+                transform: translateX(-50%);
+            }
+            
+            .student-table {
+                display: block;
+                overflow-x: auto;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .calendar th {
+                font-size: 12px;
+            }
+            
+            .day-number {
+                font-size: 14px;
+            }
+            
+            .event {
+                font-size: 9px;
+            }
+            
+            .attendance-option {
+                padding: 5px 8px;
+                font-size: 11px;
+            }
         }
     </style>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
 </head>
 <body>
-    <div class="container">
-        <a href="index.html" class="logo"></a>
-        <div class="title">KOH SAMUI SCHOOL</div>
-        <a href="choose.html" class="button">เข้าสู่เว็บไซต์</a>
+    <div class="header">
+        <div class="logo">
+            <img src="b.png" alt="KS Logo" style="width: 30px; height: 30px;">
+        </div>
+        <div class="school-name">KOH SAMUI SCHOOL</div>
     </div>
+    
+    <div class="container">
+        <!-- Welcome Screen -->
+        <div id="welcomeScreen" class="welcome-screen">
+            <h1>ยินดีต้อนรับสู่ระบบออนไลน์<br>โรงเรียนเกาะสมุย</h1>
+            <button class="btn pulse" onclick="showLogin()">
+                <i class="fas fa-sign-in-alt"></i> เข้าสู่เว็บไซต์
+            </button>
+        </div>
+
+        <!-- Login Screen -->
+        <div id="loginScreen" class="card">
+            <div class="back-button" onclick="showWelcome()">
+                <i class="fas fa-arrow-left"></i>
+            </div>
+            <div class="card-icon">
+                <i class="fas fa-user-circle"></i>
+            </div>
+            <h2>เข้าสู่ระบบ</h2>
+            <div class="form-group">
+                <label for="username">ชื่อผู้ใช้:</label>
+                <input type="text" id="username" class="form-control" placeholder="กรอกชื่อผู้ใช้หรือรหัสนักเรียน">
+            </div>
+            <div class="form-group">
+                <label for="password">รหัสผ่าน:</label>
+                <input type="password" id="password" class="form-control" placeholder="กรอกรหัสผ่าน">
+            </div>
+            <div class="form-group">
+                <label for="userType">ประเภทผู้ใช้:</label>
+                <select id="userType" class="form-control">
+                    <option value="student">นักเรียน</option>
+                    <option value="teacher">คุณครู</option>
+                    <option value="admin">ผู้ดูแลระบบ</option>
+                </select>
+            </div>
+            <button class="btn" onclick="login()">
+                <i class="fas fa-sign-in-alt"></i> เข้าสู่ระบบ
+            </button>
+            <p class="text-center mt-3">
+                ยังไม่มีบัญชีผู้ใช้? <a href="javascript:void(0)" onclick="showRegister()">ลงทะเบียนนักเรียนใหม่</a>
+            </p>
+        </div>
+
+        <!-- Register Screen -->
+        <div id="registerScreen" class="card">
+            <div class="back-button" onclick="showLogin()">
+                <i class="fas fa-arrow-left"></i>
+            </div>
+            <div class="card-icon">
+                <i class="fas fa-graduation-cap"></i>
+            </div>
+            <h2>ลงทะเบียนนักเรียนใหม่</h2>
+            <div class="form-group">
+                <label for="registerName">ชื่อ:</label>
+                <input type="text" id="registerName" class="form-control" placeholder="กรอกชื่อของคุณ">
+            </div>
+            <div class="form-group">
+                <label for="registerPassword">รหัสผ่าน:</label>
+                <input type="password" id="registerPassword" class="form-control" placeholder="กรอกรหัสผ่าน">
+            </div>
+            <div class="form-group">
+                <label for="registerClass">ชั้นเรียน:</label>
+                <select id="registerClass" class="form-control">
+                    <option value="">เลือกชั้นเรียน</option>
+                    <option value="6/1">ม.6/1</option>
+                    <option value="6/2">ม.6/2</option>
+                    <option value="6/3">ม.6/3</option>
+                    <option value="6/4">ม.6/4</option>
+                    <option value="6/5">ม.6/5</option>
+                    <option value="6/6">ม.6/6</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="registerStudentId">เลขประจำตัวนักเรียน:</label>
+                <input type="text" id="registerStudentId" class="form-control" placeholder="เช่น 61074">
+            </div>
+            <div class="form-group">
+                <label for="registerEmail">อีเมลโรงเรียน:</label>
+                <input type="email" id="registerEmail" class="form-control" placeholder="example@school.ac.th">
+            </div>
+            <div class="form-group">
+                <label for="registerConfirmPassword">รหัสผ่าน:</label>
+                <input type="password" id="registerConfirmPassword" class="form-control" placeholder="ยืนยันรหัสผ่านอีกครั้ง">
+            </div>
+            
+            <div class="profile-upload">
+                <div class="profile-circle">
+                    <div id="profile-emoji" class="emoji">🐱</div>
+                </div>
+                <button type="button" class="schedule-btn" onclick="getRandomEmoji()">
+                    <i class="fas fa-random"></i> สุ่มอีโมจิใหม่
+                </button>
+            </div>
+            
+            <button class="btn" onclick="register()">
+                <i class="fas fa-user-plus"></i> ลงทะเบียน
+            </button>
+            <p class="text-center mt-3">
+                มีบัญชีอยู่แล้ว? <a href="javascript:void(0)" onclick="showLogin()">เข้าสู่ระบบ</a>
+            </p>
+        </div>
+        
+        <!-- Student Dashboard -->
+        <div id="dashboardScreen" class="dashboard">
+            <div class="dashboard-container">
+                <div class="sidebar">
+                    <div class="user-profile">
+                        <div class="profile-img">
+                            <div id="student-profile-emoji" class="emoji">🐱</div>
+                        </div>
+                    </div>
+                    
+                    <div class="user-info">
+                        <div class="info-item">
+                            <div class="info-icon"><i class="fas fa-graduation-cap"></i></div>
+                            <div class="info-text" id="studentClass">ชั้น 6/1</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-icon"><i class="fas fa-user"></i></div>
+                            <div class="info-text" id="studentName">วิรัศกร เวอซี</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-icon"><i class="fas fa-id-card"></i></div>
+                            <div class="info-text" id="studentId">เลขประจำตัว 15809</div>
+                        </div>
+                    </div>
+                    
+                    <div class="schedule-section">
+                        <div class="schedule-title">
+                            ตารางเรียน
+                            <button class="schedule-btn">
+                                <i class="fas fa-download"></i> ดาวน์โหลดตาราง
+                            </button>
+                        </div>
+                        
+                        <div class="schedule-preview">
+                            <img src="a.png" alt="Schedule Preview" style="width: 100%; height: 100%; object-fit: cover;">
+                        </div>
+                        
+                        <div class="text-center mt-3">
+                            <button class="btn" style="width: auto; padding: 10px 20px;" onclick="showLogin()">
+                                <i class="fas fa-sign-out-alt"></i> ออกจากระบบ
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="content">
+                    <div class="calendar-header">
+                        <div>
+                            <div class="year" id="calendar-year">2025</div>
+                            <div class="month" id="calendar-month">มีนาคม 2025</div>
+                        </div>
+                        <div class="nav-buttons">
+                            <div class="nav-btn" onclick="prevMonth()"><i class="fas fa-chevron-left"></i></div>
+                            <div class="nav-btn" onclick="nextMonth()"><i class="fas fa-chevron-right"></i></div>
+                        </div>
+                    </div>
+                    
+                    <table class="calendar" id="calendar-table">
+                        <thead>
+                            <tr>
+                                <th>อาทิตย์</th>
+                                <th>จันทร์</th>
+                                <th>อังคาร</th>
+                                <th>พุธ</th>
+                                <th>พฤหัสบดี</th>
+                                <th>ศุกร์</th>
+                                <th>เสาร์</th>
+                            </tr>
+                        </thead>
+                        <tbody id="calendar-body">
+                            <!-- Calendar will be generated dynamically -->
+                        </tbody>
+                    </table>
+                    
+                    <div class="month-events">
+                        <div class="month-events-header">
+                            <h3><i class="fas fa-calendar-alt"></i> กิจกรรมในเดือนนี้</h3>
+                            <button class="schedule-btn" onclick="showAddEventForm()">
+                                <i class="fas fa-plus"></i> เพิ่มกิจกรรม
+                            </button>
+                        </div>
+                        
+                        <div id="event-list" class="event-list">
+                            <!-- Events will be populated dynamically -->
+                        </div>
+                        
+                        <div id="add-event-form" class="add-event-form">
+                            <div class="add-event-header">
+                                <h4>เพิ่มกิจกรรมใหม่</h4>
+                                <div class="close-btn" onclick="hideAddEventForm()">
+                                    <i class="fas fa-times"></i>
+                                </div>
+                            </div>
+                            
+                            <div class="event-form-row">
+                                <div class="form-group" style="flex: 1;">
+                                    <label for="event-date">วันที่:</label>
+                                    <input type="date" id="event-date" class="form-control">
+                                </div>
+                                <div class="form-group" style="flex: 2;">
+                                    <label for="event-name">ชื่อกิจกรรม:</label>
+                                    <input type="text" id="event-name" class="form-control" placeholder="ชื่อกิจกรรม">
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label>สี:</label>
+                                <div class="event-color-select">
+                                    <div class="color-option selected" style="background-color: var(--success);" data-color="success"></div>
+                                    <div class="color-option" style="background-color: var(--info);" data-color="info"></div>
+                                    <div class="color-option" style="background-color: var(--warning);" data-color="warning"></div>
+                                    <div class="color-option" style="background-color: var(--danger);" data-color="danger"></div>
+                                    <div class="color-option" style="background-color: #ec4899;" data-color="pink"></div>
+                                </div>
+                            </div>
+                            
+                            <button class="btn" onclick="addEvent()">
+                                <i class="fas fa-plus"></i> เพิ่มกิจกรรม
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Teacher Dashboard -->
+        <div id="teacherDashboard" class="dashboard">
+            <div class="dashboard-container">
+                <div class="sidebar">
+                    <div class="user-profile">
+                        <div class="profile-img">
+                            <div id="teacher-profile-emoji" class="emoji">👨‍🏫</div>
+                        </div>
+                    </div>
+                    
+                    <div class="user-info">
+                        <div class="info-item">
+                            <div class="info-icon"><i class="fas fa-user-tie"></i></div>
+                            <div class="info-text" id="teacherName">อาจารย์ธนพล สุขเกษม</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-icon"><i class="fas fa-chalkboard-teacher"></i></div>
+                            <div class="info-text">คุณครูประจำชั้น</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-icon"><i class="fas fa-book"></i></div>
+                            <div class="info-text">วิชาคณิตศาสตร์</div>
+                        </div>
+                    </div>
+                    
+                    <div class="schedule-section">
+                        <div class="schedule-title">
+                            ตารางสอน
+                            <button class="schedule-btn">
+                                <i class="fas fa-download"></i> ดาวน์โหลดตาราง
+                            </button>
+                        </div>
+                        
+                        <div class="schedule-preview">
+                            <img src="a.png" alt="Schedule Preview" style="width: 100%; height: 100%; object-fit: cover;">
+                        </div>
+                        
+                        <div class="text-center mt-3">
+                            <button class="btn" style="width: auto; padding: 10px 20px;" onclick="showLogin()">
+                                <i class="fas fa-sign-out-alt"></i> ออกจากระบบ
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="content">
+                    <h2 style="margin-bottom: 20px; color: var(--primary-dark);">ชั้นเรียนของฉัน</h2>
+                    
+                    <div class="class-cards" id="class-cards">
+                        <!-- Class cards will be populated dynamically -->
+                    </div>
+                    
+                    <div id="student-list-container" class="student-list hidden">
+                        <div class="student-list-header">
+                            <h3 id="selected-class-title">รายชื่อนักเรียนชั้น ม.6/1</h3>
+                            <div class="header-actions">
+                                <button class="schedule-btn" onclick="hideStudentList()">
+                                    <i class="fas fa-arrow-left"></i> กลับหน้าห้องเรียน
+                                </button>
+                                <span id="current-date"></span>
+                            </div>
+                        </div>
+                        
+                        <div class="tabs">
+                            <div class="tab active" onclick="switchTab('attendance')">รายชื่อนักเรียน</div>
+                            <div class="tab" onclick="switchTab('schedule')">ตารางเรียน</div>
+                            <div class="tab" onclick="switchTab('activities')">กิจกรรม</div>
+                        </div>
+                        
+                        <div id="attendance-tab" class="tab-content active">
+                            <table class="student-table" id="student-table">
+                                <thead>
+                                    <tr>
+                                        <th style="width: 60px;">ลำดับ</th>
+                                        <th style="width: 100px;">รหัส</th>
+                                        <th>ชื่อ-นามสกุล</th>
+                                        <th style="width: 250px;">การเข้าเรียน</th>
+                                        <th style="width: 100px;">สถิติการลา</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="student-table-body">
+                                    <!-- Student list will be populated dynamically -->
+                                </tbody>
+                            </table>
+                        </div>
+                        
+                        <div id="schedule-tab" class="tab-content">
+                            <div class="class-schedule">
+                                <div class="schedule-actions" style="display: flex; justify-content: space-between; margin-bottom: 15px;">
+                                    <h4>ตารางเรียนประจำชั้น <span id="schedule-class"></span></h4>
+                                    <button class="schedule-btn">
+                                        <i class="fas fa-print"></i> พิมพ์ตาราง
+                                    </button>
+                                </div>
+                                <div id="class-schedule-image-container">
+                                    <img id="class-schedule-image" src="a.png" alt="Schedule Preview" style="width: 100%; height: 100%; object-fit: cover;" onclick="toggleScheduleImage()">
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div id="activities-tab" class="tab-content">
+                            <div class="class-activities">
+                                <div class="activities-header" style="display: flex; justify-content: space-between; margin-bottom: 15px;">
+                                    <h4>กิจกรรมของชั้น <span id="activities-class"></span></h4>
+                                    <button class="schedule-btn" onclick="showAddClassActivityForm()">
+                                        <i class="fas fa-plus"></i> เพิ่มกิจกรรม
+                                    </button>
+                                </div>
+                                
+                                <div id="class-activities-list" class="event-list">
+                                    <!-- Class activities will be populated dynamically -->
+                                </div>
+                                
+                                <div id="add-class-activity-form" class="add-event-form" style="display: none;">
+                                    <div class="add-event-header">
+                                        <h4>เพิ่มกิจกรรมใหม่</h4>
+                                        <div class="close-btn" onclick="hideAddClassActivityForm()">
+                                            <i class="fas fa-times"></i>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="event-form-row">
+                                        <div class="form-group" style="flex: 1;">
+                                            <label for="class-activity-date">วันที่:</label>
+                                            <input type="date" id="class-activity-date" class="form-control">
+                                        </div>
+                                        <div class="form-group" style="flex: 2;">
+                                            <label for="class-activity-name">ชื่อกิจกรรม:</label>
+                                            <input type="text" id="class-activity-name" class="form-control" placeholder="ชื่อกิจกรรม">
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label>สี:</label>
+                                        <div class="event-color-select">
+                                            <div class="color-option selected" style="background-color: var(--success);" data-color="success"></div>
+                                            <div class="color-option" style="background-color: var(--info);" data-color="info"></div>
+                                            <div class="color-option" style="background-color: var(--warning);" data-color="warning"></div>
+                                            <div class="color-option" style="background-color: var(--danger);" data-color="danger"></div>
+                                            <div class="color-option" style="background-color: #ec4899;" data-color="pink"></div>
+                                        </div>
+                                    </div>
+                                    
+                                    <button class="btn" onclick="addClassActivity()">
+                                        <i class="fas fa-plus"></i> เพิ่มกิจกรรม
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ข้อมูลพื้นฐานระบบ
+        const DATA = {
+            // รายชื่อ emoji ที่ใช้แสดงโปรไฟล์
+            emojiList: [
+                '👧', '👦', '👨', '👩', '👱‍♀️', '👱', '👴', '👵', '👲', '👳‍♀️', '👳', '👮‍♀️', '👮', '👷‍♀️', '👷',
+                '👸', '🤴', '👼', '🎅', '👨‍🎓', '👩‍🎓', '👨‍🏫', '👩‍🏫', '🧙‍♂️', '🧙‍♀️', '🧚‍♂️', '🧚‍♀️', '👨‍⚕️', '👩‍⚕️',
+                '🐶', '🐱', '🐭', '🐹', '🐰', '🦊', '🐻', '🐼', '🐨', '🐯', '🦁', '🐮', '🐷', '🐸', '🐵', '🙈', '🙉', '🙊',
+                '🐔', '🐧', '🐦', '🐤', '🦆', '🦅', '🦉', '🦇', '🐺', '🐗', '🐴', '🦄', '🐝', '🐛', '🦋', '🐌', '🐞',
+                '🐙', '🦑', '🦐', '🦀', '🐠', '🐟', '🐬', '🐳', '🐋', '🦈', '🐊', '🐅', '🐆', '🦓', '🦍', '🐘', '🦏'
+            ],
+            
+            // ข้อมูลห้องเรียน
+            classes: [
+                { id: "6/1", name: "ม.6/1", students: 32, roomTeacher: "อ.ธนพล สุขเกษม" },
+                { id: "6/2", name: "ม.6/2", students: 30, roomTeacher: "อ.สมศรี ใจดี" },
+                { id: "6/3", name: "ม.6/3", students: 35, roomTeacher: "อ.วิชัย สมานฉันท์" },
+                { id: "6/4", name: "ม.6/4", students: 33, roomTeacher: "อ.นภา วงศ์ประเสริฐ" },
+                { id: "6/5", name: "ม.6/5", students: 28, roomTeacher: "อ.อนุชา มีเมตตา" },
+                { id: "6/6", name: "ม.6/6", students: 31, roomTeacher: "อ.สุพร ยิ้มแย้ม" }
+            ],
+            
+            // เดือนภาษาไทย
+            monthNames: [
+                "มกราคม", "กุมภาพันธ์", "มีนาคม", "เมษายน", "พฤษภาคม", "มิถุนายน",
+                "กรกฎาคม", "สิงหาคม", "กันยายน", "ตุลาคม", "พฤศจิกายน", "ธันวาคม"
+            ],
+            
+            // รูปภาพตารางเรียนแต่ละห้อง
+            scheduleImages: {
+                "6/1": "a.png",  
+                "6/2": "a.png",
+                "6/3": "a.png",
+                "6/4": "a.png",
+                "6/5": "a.png",
+                "6/6": "a.png"
+            }
+        };
+        
+        // ฐานข้อมูลและตัวแปรของระบบ
+        const appData = {
+            // กิจกรรมทั่วไป
+            events: [
+                { date: new Date(2025, 2, 3), name: "ส่งงานเขียน", color: "success" },
+                { date: new Date(2025, 2, 6), name: "สอบปลายภาค", color: "warning" },
+                { date: new Date(2025, 2, 10), name: "สอบ ALE", color: "danger" },
+                { date: new Date(2025, 2, 31), name: "รับสมัครนักเรียนใหม่", color: "pink" }
+            ],
+            // กิจกรรมของแต่ละห้องเรียน
+            classActivities: {},
+            // ข้อมูลนักเรียนแต่ละห้อง
+            students: {},
+            // ห้องเรียนที่เลือกอยู่ปัจจุบัน
+            selectedClass: null,
+            // ผู้ใช้ปัจจุบัน
+            currentUser: null
+        };
+        
+        // ปฏิทินปัจจุบัน
+        let currentMonth = new Date().getMonth();
+        let currentYear = new Date().getFullYear();
+        
+        // ========== ฟังก์ชันจัดการ UI ==========
+        
+        // สุ่ม emoji สำหรับโปรไฟล์
+        function getRandomEmoji() {
+            const randomIndex = Math.floor(Math.random() * DATA.emojiList.length);
+            const emoji = DATA.emojiList[randomIndex];
+            
+            const profileEmoji = document.getElementById('profile-emoji');
+            if (profileEmoji) {
+                profileEmoji.textContent = emoji;
+            }
+        }
+        
+        // แสดงหน้าต่างๆ
+        function showWelcome() {
+            document.querySelectorAll('#welcomeScreen, #loginScreen, #registerScreen, #dashboardScreen, #teacherDashboard')
+                .forEach(el => el.style.display = 'none');
+            document.getElementById('welcomeScreen').style.display = 'block';
+        }
+
+        function showLogin() {
+            document.querySelectorAll('#welcomeScreen, #loginScreen, #registerScreen, #dashboardScreen, #teacherDashboard')
+                .forEach(el => el.style.display = 'none');
+            document.getElementById('loginScreen').style.display = 'block';
+        }
+
+        function showRegister() {
+            document.querySelectorAll('#welcomeScreen, #loginScreen, #registerScreen, #dashboardScreen, #teacherDashboard')
+                .forEach(el => el.style.display = 'none');
+            document.getElementById('registerScreen').style.display = 'block';
+            getRandomEmoji();
+        }
+        
+        // ========== ระบบล็อกอิน/ลงทะเบียน ==========
+        
+        // ล็อกอินเข้าสู่ระบบ
+        function login() {
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            const userType = document.getElementById('userType').value;
+            
+            if (!username || !password) {
+                alert('กรุณากรอกชื่อผู้ใช้และรหัสผ่าน');
+                return;
+            }
+            
+            if (userType === 'student') {
+                // สร้างข้อมูลผู้ใช้นักเรียนตัวอย่าง
+                const randomEmojiIndex = Math.floor(Math.random() * DATA.emojiList.length);
+                const userData = {
+                    name: 'วิรัศกร เวอซี',
+                    class: '6/1',
+                    studentId: '15809',
+                    profileEmoji: DATA.emojiList[randomEmojiIndex] || '👨‍🎓'
+                };
+                
+                appData.currentUser = userData;
+                showStudentDashboard(userData);
+            } else if (userType === 'teacher') {
+                // สร้างข้อมูลผู้ใช้ครูตัวอย่าง
+                const userData = {
+                    name: 'อาจารย์ธนพล สุขเกษม',
+                    role: 'ครูประจำชั้น',
+                    subject: 'คณิตศาสตร์',
+                    profileEmoji: '👨‍🏫'
+                };
+                
+                appData.currentUser = userData;
+                showTeacherDashboard(userData);
+            } else {
+                alert('ระบบสำหรับผู้ดูแลยังไม่เปิดให้บริการ');
+            }
+        }
+        
+        // ลงทะเบียนผู้ใช้ใหม่
+        function register() {
+            const name = document.getElementById('registerName').value;
+            const password = document.getElementById('registerPassword').value;
+            const confirmPassword = document.getElementById('registerConfirmPassword').value;
+            const studentClass = document.getElementById('registerClass').value;
+            const studentId = document.getElementById('registerStudentId').value;
+            const email = document.getElementById('registerEmail').value;
+            
+            // ตรวจสอบว่ากรอกข้อมูลครบไหม
+            if (!name || !password || !confirmPassword || !studentClass || !studentId || !email) {
+                alert('กรุณากรอกข้อมูลให้ครบถ้วน');
+                return;
+            }
+            
+            // ตรวจสอบรหัสผ่านตรงกันไหม
+            if (password !== confirmPassword) {
+                alert('รหัสผ่านไม่ตรงกัน กรุณาตรวจสอบอีกครั้ง');
+                return;
+            }
+            
+            // อ่านข้อมูล emoji ที่เลือก
+            const profileEmoji = document.getElementById('profile-emoji').textContent;
+            
+            // สร้างข้อมูลนักเรียน
+            const userData = {
+                id: Date.now(),
+                name,
+                class: studentClass,
+                studentId,
+                email,
+                password,
+                profileEmoji,
+                attendance: 'present',
+                leaveCount: 0,
+                maxLeaves: 10
+            };
+            
+            // บันทึกข้อมูลผู้ใช้
+            appData.currentUser = userData;
+            
+            // เพิ่มนักเรียนเข้าห้องเรียน
+            if (!appData.students[studentClass]) {
+                appData.students[studentClass] = [];
+            }
+            
+            appData.students[studentClass].push({
+                id: userData.id,
+                studentId: userData.studentId,
+                name: userData.name,
+                attendance: userData.attendance,
+                leaveCount: userData.leaveCount,
+                maxLeaves: userData.maxLeaves,
+                profileEmoji: userData.profileEmoji
+            });
+            
+            alert('ลงทะเบียนสำเร็จ! กำลังเข้าสู่ระบบอัตโนมัติ');
+            showStudentDashboard(userData);
+        }
+        
+        // ========== ระบบแดชบอร์ดนักเรียน ==========
+        
+        // แสดงแดชบอร์ดนักเรียน
+        function showStudentDashboard(userData) {
+            document.querySelectorAll('#welcomeScreen, #loginScreen, #registerScreen, #dashboardScreen, #teacherDashboard')
+                .forEach(el => el.style.display = 'none');
+            document.getElementById('dashboardScreen').style.display = 'block';
+            
+            // อัพเดทข้อมูลผู้ใช้ในหน้าแดชบอร์ด
+            if (userData) {
+                document.getElementById('studentName').textContent = userData.name;
+                document.getElementById('studentClass').textContent = 'ชั้น ' + userData.class;
+                document.getElementById('studentId').textContent = 'เลขประจำตัว ' + userData.studentId;
+                
+                // ตั้งค่า emoji โปรไฟล์
+                const studentProfileEmoji = document.getElementById('student-profile-emoji');
+                if (studentProfileEmoji && userData.profileEmoji) {
+                    studentProfileEmoji.textContent = userData.profileEmoji;
+                }
+            }
+            
+            // สร้างปฏิทิน
+            generateCalendar(currentMonth, currentYear);
+            updateEventList();
+        }
+        
+        // ระบบปฏิทิน
+        function generateCalendar(month, year) {
+            const calendarBody = document.getElementById('calendar-body');
+            if (!calendarBody) return;
+            
+            // ล้างปฏิทินเดิม
+            calendarBody.innerHTML = '';
+            
+            // ตั้งค่าหัวปฏิทิน
+            const yearElement = document.getElementById('calendar-year');
+            const monthElement = document.getElementById('calendar-month');
+            
+            if (yearElement) yearElement.textContent = year;
+            if (monthElement) monthElement.textContent = `${DATA.monthNames[month]} ${year}`;
+            
+            const firstDay = new Date(year, month, 1).getDay();
+            const daysInMonth = new Date(year, month + 1, 0).getDate();
+            const today = new Date();
+            let date = 1;
+            
+            // สร้างปฏิทิน
+            for (let i = 0; i < 6; i++) {
+                if (date > daysInMonth) break;
+                
+                const row = document.createElement('tr');
+                
+                for (let j = 0; j < 7; j++) {
+                    const cell = document.createElement('td');
+                    
+                    if (i === 0 && j < firstDay) {
+                        // ช่องว่างก่อนวันแรกของเดือน
+                        row.appendChild(cell);
+                    } else if (date > daysInMonth) {
+                        // ช่องว่างหลังวันสุดท้ายของเดือน
+                        row.appendChild(cell);
+                    } else {
+                        // สร้างเซลล์วันที่
+                        const dayNumber = document.createElement('span');
+                        dayNumber.classList.add('day-number');
+                        dayNumber.textContent = date;
+                        cell.appendChild(dayNumber);
+                        
+                        // ตรวจสอบว่าเป็นวันนี้หรือไม่
+                        if (date === today.getDate() && month === today.getMonth() && year === today.getFullYear()) {
+                            cell.classList.add('today');
+                        }
+                        
+                        // เพิ่มกิจกรรมในวันนี้
+                        appData.events
+                            .filter(event => {
+                                return event.date.getDate() === date && 
+                                      event.date.getMonth() === month && 
+                                      event.date.getFullYear() === year;
+                            })
+                            .forEach(event => {
+                                const eventElement = document.createElement('span');
+                                eventElement.classList.add('event', `event-${event.color}`);
+                                eventElement.textContent = event.name;
+                                cell.appendChild(eventElement);
+                            });
+                        
+                        row.appendChild(cell);
+                        date++;
+                    }
+                }
+                
+                calendarBody.appendChild(row);
+            }
+        }
+        
+        // ไปปฏิทินเดือนก่อนหน้า
+        function prevMonth() {
+            currentMonth--;
+            if (currentMonth < 0) {
+                currentMonth = 11;
+                currentYear--;
+            }
+            generateCalendar(currentMonth, currentYear);
+            updateEventList();
+        }
+        
+        // ไปปฏิทินเดือนถัดไป
+        function nextMonth() {
+            currentMonth++;
+            if (currentMonth > 11) {
+                currentMonth = 0;
+                currentYear++;
+            }
+            generateCalendar(currentMonth, currentYear);
+            updateEventList();
+        }
+        
+        // ========== ระบบจัดการกิจกรรม ==========
+        
+        // อัพเดทรายการกิจกรรม
+        function updateEventList() {
+            const eventList = document.getElementById('event-list');
+            if (!eventList) return;
+            
+            eventList.innerHTML = '';
+            
+            // กรองกิจกรรมของเดือนนี้และเรียงตามวันที่
+            const monthEvents = appData.events
+                .filter(event => event.date.getMonth() === currentMonth && event.date.getFullYear() === currentYear)
+                .sort((a, b) => a.date - b.date);
+            
+            // ถ้าไม่มีกิจกรรม
+            if (monthEvents.length === 0) {
+                eventList.innerHTML = '<div style="text-align: center; padding: 20px; color: var(--grey);">ไม่มีกิจกรรมในเดือนนี้</div>';
+                return;
+            }
+            
+            // สร้าง element สำหรับแต่ละกิจกรรม
+            monthEvents.forEach((event, index) => {
+                const day = event.date.getDate();
+                const eventElement = document.createElement('div');
+                eventElement.classList.add('event-item');
+                
+                eventElement.innerHTML = `
+                    <div class="event-dot" style="background-color: var(--${event.color});"></div>
+                    <div class="event-text">${day} ${DATA.monthNames[currentMonth]} - ${event.name}</div>
+                    <div class="delete-btn" onclick="deleteEvent(${index})">
+                        <i class="fas fa-trash-alt"></i>
+                    </div>
+                `;
+                
+                eventList.appendChild(eventElement);
+            });
+        }
+        
+        // แสดงฟอร์มเพิ่มกิจกรรม
+        function showAddEventForm() {
+            const addEventForm = document.getElementById('add-event-form');
+            if (addEventForm) {
+                addEventForm.style.display = 'block';
+            }
+            
+            // ตั้งค่าวันที่เริ่มต้นเป็นวันที่ปัจจุบัน
+            const today = new Date();
+            const formattedDate = `${currentYear}-${String(currentMonth + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
+            
+            const eventDateInput = document.getElementById('event-date');
+            if (eventDateInput) {
+                eventDateInput.value = formattedDate;
+            }
+        }
+        
+        // ซ่อนฟอร์มเพิ่มกิจกรรม
+        function hideAddEventForm() {
+            const addEventForm = document.getElementById('add-event-form');
+            if (addEventForm) {
+                addEventForm.style.display = 'none';
+            }
+        }
+        
+        // เพิ่มกิจกรรมใหม่
+        function addEvent() {
+            const dateInput = document.getElementById('event-date');
+            const nameInput = document.getElementById('event-name');
+            
+            if (!dateInput || !nameInput) return;
+            
+            const dateValue = dateInput.value;
+            const name = nameInput.value.trim();
+            
+            if (!dateValue || !name) {
+                alert('กรุณากรอกข้อมูลให้ครบถ้วน');
+                return;
+            }
+            
+            const colorOption = document.querySelector('.color-option.selected');
+            const color = colorOption ? colorOption.dataset.color : 'success';
+            
+            // สร้างวันที่จากค่าที่รับมา
+            const date = new Date(dateValue);
+            
+            // เพิ่มกิจกรรมใหม่
+            appData.events.push({ date, name, color });
+            
+            // อัพเดทหน้าจอถ้ากิจกรรมอยู่ในเดือนปัจจุบัน
+            if (date.getMonth() === currentMonth && date.getFullYear() === currentYear) {
+                generateCalendar(currentMonth, currentYear);
+                updateEventList();
+            }
+            
+            // ล้างฟอร์มและซ่อน
+            nameInput.value = '';
+            hideAddEventForm();
+        }
+        
+        // ลบกิจกรรม
+        function deleteEvent(index) {
+            if (confirm('คุณต้องการลบกิจกรรมนี้ใช่หรือไม่?')) {
+                // หาลำดับของกิจกรรมจากมุมมองปัจจุบัน
+                const monthEvents = appData.events
+                    .filter(event => event.date.getMonth() === currentMonth && event.date.getFullYear() === currentYear)
+                    .sort((a, b) => a.date - b.date);
+                
+                const eventToDelete = monthEvents[index];
+                
+                // หาดัชนีในอาร์เรย์หลัก
+                const mainIndex = appData.events.findIndex(e => 
+                    e.date.getTime() === eventToDelete.date.getTime() && e.name === eventToDelete.name
+                );
+                
+                if (mainIndex !== -1) {
+                    appData.events.splice(mainIndex, 1);
+                    updateEventList();
+                    generateCalendar(currentMonth, currentYear);
+                }
+            }
+        }
+        
+        // ========== ระบบแดชบอร์ดครู ==========
+        
+        // แสดงแดชบอร์ดครู
+        function showTeacherDashboard(userData) {
+            document.querySelectorAll('#welcomeScreen, #loginScreen, #registerScreen, #dashboardScreen, #teacherDashboard')
+                .forEach(el => el.style.display = 'none');
+            document.getElementById('teacherDashboard').style.display = 'block';
+            
+            // อัพเดทข้อมูลครู
+            if (userData) {
+                const teacherNameElement = document.getElementById('teacherName');
+                if (teacherNameElement) {
+                    teacherNameElement.textContent = userData.name;
+                }
+                
+                // ตั้งค่า emoji โปรไฟล์
+                const teacherProfileEmoji = document.getElementById('teacher-profile-emoji');
+                if (teacherProfileEmoji && userData.profileEmoji) {
+                    teacherProfileEmoji.textContent = userData.profileEmoji;
+                }
+            }
+            
+            // เตรียมข้อมูลชั้นเรียนเริ่มต้น (ถ้ายังไม่มี)
+            DATA.classes.forEach(classInfo => {
+                if (!appData.classActivities[classInfo.id]) {
+                    appData.classActivities[classInfo.id] = [
+                        { date: new Date(2025, 2, 4), name: `กิจกรรมวิชาการ ${classInfo.name}`, color: "success" },
+                        { date: new Date(2025, 2, 18), name: `ทัศนศึกษา ${classInfo.name}`, color: "info" }
+                    ];
+                }
+                
+                if (!appData.students[classInfo.id]) {
+                    appData.students[classInfo.id] = [];
+                }
+            });
+            
+            // สร้างการ์ดแสดงชั้นเรียน
+            generateClassCards();
+            
+            // แสดงวันที่ปัจจุบัน
+            const now = new Date();
+            const dateOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+            
+            const currentDateElement = document.getElementById('current-date');
+            if (currentDateElement) {
+                currentDateElement.textContent = now.toLocaleDateString('th-TH', dateOptions);
+            }
+        }
+        
+        // สร้างการ์ดแสดงชั้นเรียน
+        function generateClassCards() {
+            const classCardsContainer = document.getElementById('class-cards');
+            if (!classCardsContainer) return;
+            
+            classCardsContainer.innerHTML = '';
+            
+            DATA.classes.forEach(classInfo => {
+                const card = document.createElement('div');
+                card.classList.add('class-card');
+                card.onclick = () => showStudentList(classInfo.id);
+                
+                // นับจำนวนนักเรียนที่ลงทะเบียนในห้องนี้
+                const students = appData.students[classInfo.id] || [];
+                
+                card.innerHTML = `
+                    <h3>${classInfo.name}</h3>
+                    <div class="class-info">
+                        <div><i class="fas fa-users"></i> ${students.length} คน</div>
+                        <div><i class="fas fa-check"></i> เช็คชื่อวันนี้</div>
+                    </div>
+                `;
+                
+                classCardsContainer.appendChild(card);
+            });
+        }
+        
+        // แสดงรายชื่อนักเรียนในห้อง
+        function showStudentList(classId) {
+            const studentListContainer = document.getElementById('student-list-container');
+            if (!studentListContainer) return;
+            
+            studentListContainer.classList.remove('hidden');
+            
+            // ตั้งค่าชื่อชั้นเรียน
+            const selectedClassTitle = document.getElementById('selected-class-title');
+            if (selectedClassTitle) {
+                selectedClassTitle.textContent = `รายชื่อนักเรียนชั้น ม.${classId}`;
+            }
+            
+            // อัพเดทแท็บรายชื่อนักเรียน
+            const studentTableBody = document.getElementById('student-table-body');
+            if (!studentTableBody) return;
+            
+            studentTableBody.innerHTML = '';
+            
+            const students = appData.students[classId];
+            
+            // ถ้าไม่มีนักเรียนในห้องนี้
+            if (!students || students.length === 0) {
+                const emptyRow = document.createElement('tr');
+                emptyRow.innerHTML = `
+                    <td colspan="5" style="text-align: center; padding: 30px; color: var(--grey);">
+                        <i class="fas fa-info-circle"></i> ยังไม่มีนักเรียนในห้องเรียนนี้
+                    </td>
+                `;
+                studentTableBody.appendChild(emptyRow);
+            } else {
+                // แสดงรายชื่อนักเรียน
+                students.forEach((student, index) => {
+                    const row = document.createElement('tr');
+                    
+                    row.innerHTML = `
+                        <td>${index + 1}</td>
+                        <td>${student.studentId}</td>
+                        <td>
+                            <div style="display: flex; align-items: center;">
+                                <span style="font-size: 24px; margin-right: 10px;">${student.profileEmoji || '👤'}</span>
+                                ${student.name}
+                            </div>
+                        </td>
+                        <td>
+                            <div class="attendance-options">
+                                <div class="attendance-option present ${student.attendance === 'present' ? 'selected' : ''}" 
+                                     onclick="updateAttendance('${classId}', ${student.id}, 'present')">มา</div>
+                                <div class="attendance-option absent ${student.attendance === 'absent' ? 'selected' : ''}" 
+                                     onclick="updateAttendance('${classId}', ${student.id}, 'absent')">ขาด</div>
+                                <div class="attendance-option late ${student.attendance === 'late' ? 'selected' : ''}" 
+                                     onclick="updateAttendance('${classId}', ${student.id}, 'late')">สาย</div>
+                                <div class="attendance-option leave ${student.attendance === 'leave' ? 'selected' : ''}" 
+                                     onclick="updateAttendance('${classId}', ${student.id}, 'leave')">ลา</div>
+                            </div>
+                        </td>
+                        <td>
+                            <span class="leave-counter">${student.leaveCount}/${student.maxLeaves}</span>
+                        </td>
+                    `;
+                    
+                    studentTableBody.appendChild(row);
+                });
+            }
+            
+            // อัพเดทแท็บตารางเรียน
+            const scheduleClassElement = document.getElementById('schedule-class');
+            if (scheduleClassElement) {
+                scheduleClassElement.textContent = `ม.${classId}`;
+            }
+            
+            // ตั้งค่ารูปภาพตารางเรียน
+            const scheduleImageElement = document.getElementById('class-schedule-image');
+            if (scheduleImageElement && DATA.scheduleImages[classId]) {
+                scheduleImageElement.src = DATA.scheduleImages[classId];
+            }
+            
+            // อัพเดทแท็บกิจกรรม
+            const activitiesClassElement = document.getElementById('activities-class');
+            if (activitiesClassElement) {
+                activitiesClassElement.textContent = `ม.${classId}`;
+            }
+            updateClassActivitiesList(classId);
+            
+            // เริ่มต้นที่แท็บรายชื่อนักเรียน
+            switchTab('attendance');
+            
+            // บันทึกชั้นเรียนที่เลือกอยู่
+            appData.selectedClass = classId;
+        }
+        
+        // ซ่อนรายชื่อนักเรียน
+        function hideStudentList() {
+            const studentListContainer = document.getElementById('student-list-container');
+            if (studentListContainer) {
+                studentListContainer.classList.add('hidden');
+            }
+        }
+        
+        // สลับแท็บในหน้ารายชื่อนักเรียน
+        function switchTab(tabName) {
+            // ซ่อนทุกแท็บ
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+            document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
+            
+            // แสดงแท็บที่เลือก
+            const selectedTab = document.getElementById(`${tabName}-tab`);
+            const tabButton = document.querySelector(`.tab[onclick="switchTab('${tabName}')"]`);
+            
+            if (selectedTab) selectedTab.classList.add('active');
+            if (tabButton) tabButton.classList.add('active');
+        }
+        
+        // อัพเดทสถานะการเข้าเรียน
+        function updateAttendance(classId, studentId, status) {
+            const students = appData.students[classId];
+            if (!students) return;
+            
+            const student = students.find(s => s.id === studentId);
+            
+            if (student) {
+                // ถ้าเปลี่ยนจากสถานะ 'ลา' เป็นสถานะอื่น ลดจำนวนวันลา
+                if (student.attendance === 'leave' && status !== 'leave') {
+                    // ลดจำนวนวันลา (ไม่ให้ต่ำกว่า 0)
+                    if (student.leaveCount > 0) {
+                        student.leaveCount--;
+                    }
+                }
+                
+                // อัพเดทสถานะการเข้าเรียน
+                student.attendance = status;
+                
+                // ถ้าสถานะเป็น 'ลา' เพิ่มจำนวนวันลา
+                if (status === 'leave') {
+                    student.leaveCount++;
+                    
+                    // แจ้งเตือนถ้าลาเกินกำหนด
+                    if (student.leaveCount > student.maxLeaves) {
+                        alert(`นักเรียน ${student.name} มีการลาเกินจำนวนที่กำหนด (${student.maxLeaves} ครั้ง)`);
+                    }
+                }
+                
+                // รีเฟรชรายชื่อนักเรียน
+                showStudentList(classId);
+            }
+        }
+        
+        // ========== ระบบกิจกรรมห้องเรียน ==========
+        
+        // อัพเดทรายการกิจกรรมห้องเรียน
+        function updateClassActivitiesList(classId) {
+            const activitiesList = document.getElementById('class-activities-list');
+            if (!activitiesList) return;
+            
+            activitiesList.innerHTML = '';
+            
+            // ตรวจสอบว่ามีกิจกรรมห้องเรียนนี้หรือไม่
+            const activities = appData.classActivities[classId];
+            if (!activities || activities.length === 0) {
+                activitiesList.innerHTML = '<div style="text-align: center; padding: 20px; color: var(--grey);">ไม่มีกิจกรรมสำหรับห้องเรียนนี้</div>';
+                return;
+            }
+            
+            // เรียงกิจกรรมตามวันที่
+            const sortedActivities = [...activities].sort((a, b) => a.date - b.date);
+            
+            sortedActivities.forEach((activity, index) => {
+                const day = activity.date.getDate();
+                const month = activity.date.getMonth();
+                const year = activity.date.getFullYear();
+                
+                const eventElement = document.createElement('div');
+                eventElement.classList.add('event-item');
+                
+                eventElement.innerHTML = `
+                    <div class="event-dot" style="background-color: var(--${activity.color});"></div>
+                    <div class="event-text">${day} ${DATA.monthNames[month]} ${year} - ${activity.name}</div>
+                    <div class="delete-btn" onclick="deleteClassActivity('${classId}', ${index})">
+                        <i class="fas fa-trash-alt"></i>
+                    </div>
+                `;
+                
+                activitiesList.appendChild(eventElement);
+            });
+        }
+        
+        // แสดงฟอร์มเพิ่มกิจกรรมห้องเรียน
+        function showAddClassActivityForm() {
+            const addClassActivityForm = document.getElementById('add-class-activity-form');
+            if (addClassActivityForm) {
+                addClassActivityForm.style.display = 'block';
+            }
+            
+            // ตั้งค่าวันที่เริ่มต้นเป็นวันที่ปัจจุบัน
+            const today = new Date();
+            const formattedDate = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
+            
+            const classActivityDateInput = document.getElementById('class-activity-date');
+            if (classActivityDateInput) {
+                classActivityDateInput.value = formattedDate;
+            }
+        }
+        
+        // ซ่อนฟอร์มเพิ่มกิจกรรมห้องเรียน
+        function hideAddClassActivityForm() {
+            const addClassActivityForm = document.getElementById('add-class-activity-form');
+            if (addClassActivityForm) {
+                addClassActivityForm.style.display = 'none';
+            }
+        }
+        
+        // เพิ่มกิจกรรมห้องเรียนใหม่
+        function addClassActivity() {
+            const selectedClass = appData.selectedClass;
+            if (!selectedClass) return;
+            
+            const dateInput = document.getElementById('class-activity-date');
+            const nameInput = document.getElementById('class-activity-name');
+            
+            if (!dateInput || !nameInput) return;
+            
+            const dateValue = dateInput.value;
+            const name = nameInput.value.trim();
+            
+            if (!dateValue || !name) {
+                alert('กรุณากรอกข้อมูลให้ครบถ้วน');
+                return;
+            }
+            
+            const colorOption = document.querySelector('#add-class-activity-form .color-option.selected');
+            const color = colorOption ? colorOption.dataset.color : 'success';
+            
+            // สร้างวันที่จากค่าที่รับมา
+            const date = new Date(dateValue);
+            
+            // สร้างอาร์เรย์กิจกรรมสำหรับห้องเรียนนี้ถ้ายังไม่มี
+            if (!appData.classActivities[selectedClass]) {
+                appData.classActivities[selectedClass] = [];
+            }
+            
+            // เพิ่มกิจกรรมใหม่
+            appData.classActivities[selectedClass].push({ date, name, color });
+            
+            // อัพเดทรายการกิจกรรม
+            updateClassActivitiesList(selectedClass);
+            
+            // ล้างฟอร์มและซ่อน
+            nameInput.value = '';
+            hideAddClassActivityForm();
+        }
+        
+        // ลบกิจกรรมห้องเรียน
+        function deleteClassActivity(classId, index) {
+            if (confirm('คุณต้องการลบกิจกรรมนี้ใช่หรือไม่?')) {
+                // เรียงกิจกรรมตามวันที่
+                const sortedActivities = [...appData.classActivities[classId]].sort((a, b) => a.date - b.date);
+                
+                // หากิจกรรมที่ต้องการลบจากรายการที่เรียงแล้ว
+                const activityToDelete = sortedActivities[index];
+                
+                // หาตำแหน่งในรายการจริง
+                const originalIndex = appData.classActivities[classId].findIndex(activity => 
+                    activity.date.getTime() === activityToDelete.date.getTime() && 
+                    activity.name === activityToDelete.name
+                );
+                
+                if (originalIndex !== -1) {
+                    appData.classActivities[classId].splice(originalIndex, 1);
+                    updateClassActivitiesList(classId);
+                }
+            }
+        }
+
+        // ฟังก์ชันขยาย/ย่อภาพตารางเรียน
+function toggleScheduleImage() {
+    const scheduleImage = document.getElementById('class-schedule-image');
+    if (scheduleImage) {
+        scheduleImage.classList.toggle('expanded');
+    }
+}
+        
+        // ตั้งค่าเริ่มต้นเมื่อโหลดหน้า
+        document.addEventListener('DOMContentLoaded', function() {
+            // สุ่ม emoji สำหรับโปรไฟล์
+            getRandomEmoji();
+            
+            // ตั้งค่าการเลือกสีสำหรับกิจกรรม
+            document.querySelectorAll('.event-color-select').forEach(selector => {
+                selector.querySelectorAll('.color-option').forEach(option => {
+                    option.addEventListener('click', function() {
+                        selector.querySelectorAll('.color-option').forEach(opt => 
+                            opt.classList.remove('selected')
+                        );
+                        this.classList.add('selected');
+                    });
+                });
+            });
+        });
+    </script>
 </body>
 </html>
+
