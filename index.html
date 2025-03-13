@@ -945,6 +945,18 @@
         <div class="school-name">KOH SAMUI SCHOOL</div>
     </div>
     
+    <!-- Student ID Card Modal (แสดงรูปภาพบัตร) -->
+<div id="studentCardModal" style="display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.8);">
+    <div class="modal-content" style="background-color: transparent; margin: 10% auto; padding: 0; width: 90%; max-width: 600px; position: relative; text-align: center;">
+        <span class="close-card" style="position: absolute; top: -20px; right: -20px; color: white; font-size: 30px; font-weight: bold; cursor: pointer;">&times;</span>
+        
+        <!-- รูปภาพบัตรนักเรียน -->
+        <img src="/image/cardstudent.jfif" alt="บัตรนักเรียน" style="width: 100%; max-width: 600px; border-radius: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.5);">
+    </div>
+</div>
+
+
+
     <div class="container">
         <!-- Welcome Screen -->
         <div id="welcomeScreen" class="welcome-screen">
@@ -1070,7 +1082,12 @@
                             <div class="info-text" id="studentId">เลขประจำตัว 15809</div>
                         </div>
                     </div>
-                    
+
+                    <div class="info-item" style="cursor: pointer;" onclick="showStudentCard()">
+                        <div class="info-icon"><i class="fas fa-id-badge"></i></div>
+                        <div class="info-text">แสดงบัตรนักเรียน</div>
+                    </div>
+
                     <div class="schedule-section">
                         <div class="schedule-title">
                             ตารางเรียน
@@ -1249,6 +1266,7 @@
                                         <th>ชื่อ-นามสกุล</th>
                                         <th style="width: 250px;">การเข้าเรียน</th>
                                         <th style="width: 100px;">สถิติการลา</th>
+                                        <th style="width: 80px;">บัตร</th>
                                     </tr>
                                 </thead>
                                 <tbody id="student-table-body">
@@ -1256,6 +1274,16 @@
                                 </tbody>
                             </table>
                         </div>
+
+                        <!-- Student ID Card Modal (แสดงรูปภาพบัตร) -->
+<div id="studentCardModal" style="display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.8);">
+    <div class="modal-content" style="background-color: transparent; margin: 10% auto; padding: 0; width: 90%; max-width: 600px; position: relative; text-align: center;">
+        <span class="close-card" style="position: absolute; top: -20px; right: -20px; color: white; font-size: 30px; font-weight: bold; cursor: pointer;">&times;</span>
+        
+        <!-- รูปภาพบัตรนักเรียน -->
+        <img src="/image/cardstudent.jfif" alt="บัตรนักเรียน" style="width: 100%; max-width: 600px; border-radius: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.5);">
+    </div>
+</div>
                         
                         <div id="schedule-tab" class="tab-content">
                             <div class="class-schedule">
@@ -1837,96 +1865,101 @@
             });
         }
         
-        // แสดงรายชื่อนักเรียนในห้อง
-        function showStudentList(classId) {
-            const studentListContainer = document.getElementById('student-list-container');
-            if (!studentListContainer) return;
+       // แสดงรายชื่อนักเรียนในห้อง
+function showStudentList(classId) {
+    const studentListContainer = document.getElementById('student-list-container');
+    if (!studentListContainer) return;
+    
+    studentListContainer.classList.remove('hidden');
+    
+    // ตั้งค่าชื่อชั้นเรียน
+    const selectedClassTitle = document.getElementById('selected-class-title');
+    if (selectedClassTitle) {
+        selectedClassTitle.textContent = `รายชื่อนักเรียนชั้น ม.${classId}`;
+    }
+    
+    // อัพเดทแท็บรายชื่อนักเรียน
+    const studentTableBody = document.getElementById('student-table-body');
+    if (!studentTableBody) return;
+    
+    studentTableBody.innerHTML = '';
+    
+    const students = appData.students[classId];
+    
+    // ถ้าไม่มีนักเรียนในห้องนี้
+    if (!students || students.length === 0) {
+        const emptyRow = document.createElement('tr');
+        emptyRow.innerHTML = `
+            <td colspan="6" style="text-align: center; padding: 30px; color: var(--grey);">
+                <i class="fas fa-info-circle"></i> ยังไม่มีนักเรียนในห้องเรียนนี้
+            </td>
+        `;
+        studentTableBody.appendChild(emptyRow);
+    } else {
+        // แสดงรายชื่อนักเรียน
+        students.forEach((student, index) => {
+            const row = document.createElement('tr');
             
-            studentListContainer.classList.remove('hidden');
+            row.innerHTML = `
+                <td>${index + 1}</td>
+                <td>${student.studentId}</td>
+                <td>
+                    <div style="display: flex; align-items: center;">
+                        <span style="font-size: 24px; margin-right: 10px;">${student.profileEmoji || '👤'}</span>
+                        ${student.name}
+                    </div>
+                </td>
+                <td>
+                    <div class="attendance-options">
+                        <div class="attendance-option present ${student.attendance === 'present' ? 'selected' : ''}" 
+                             onclick="updateAttendance('${classId}', ${student.id}, 'present')">มา</div>
+                        <div class="attendance-option absent ${student.attendance === 'absent' ? 'selected' : ''}" 
+                             onclick="updateAttendance('${classId}', ${student.id}, 'absent')">ขาด</div>
+                        <div class="attendance-option late ${student.attendance === 'late' ? 'selected' : ''}" 
+                             onclick="updateAttendance('${classId}', ${student.id}, 'late')">สาย</div>
+                        <div class="attendance-option leave ${student.attendance === 'leave' ? 'selected' : ''}" 
+                             onclick="updateAttendance('${classId}', ${student.id}, 'leave')">ลา</div>
+                    </div>
+                </td>
+                <td>
+                    <span class="leave-counter">${student.leaveCount}/${student.maxLeaves}</span>
+                </td>
+                <td>
+                    <button class="schedule-btn" style="padding: 5px 10px;" onclick="showStudentCard()">
+                        <i class="fas fa-id-badge"></i> บัตร
+                    </button>
+                </td>
+            `;
             
-            // ตั้งค่าชื่อชั้นเรียน
-            const selectedClassTitle = document.getElementById('selected-class-title');
-            if (selectedClassTitle) {
-                selectedClassTitle.textContent = `รายชื่อนักเรียนชั้น ม.${classId}`;
-            }
-            
-            // อัพเดทแท็บรายชื่อนักเรียน
-            const studentTableBody = document.getElementById('student-table-body');
-            if (!studentTableBody) return;
-            
-            studentTableBody.innerHTML = '';
-            
-            const students = appData.students[classId];
-            
-            // ถ้าไม่มีนักเรียนในห้องนี้
-            if (!students || students.length === 0) {
-                const emptyRow = document.createElement('tr');
-                emptyRow.innerHTML = `
-                    <td colspan="5" style="text-align: center; padding: 30px; color: var(--grey);">
-                        <i class="fas fa-info-circle"></i> ยังไม่มีนักเรียนในห้องเรียนนี้
-                    </td>
-                `;
-                studentTableBody.appendChild(emptyRow);
-            } else {
-                // แสดงรายชื่อนักเรียน
-                students.forEach((student, index) => {
-                    const row = document.createElement('tr');
-                    
-                    row.innerHTML = `
-                        <td>${index + 1}</td>
-                        <td>${student.studentId}</td>
-                        <td>
-                            <div style="display: flex; align-items: center;">
-                                <span style="font-size: 24px; margin-right: 10px;">${student.profileEmoji || '👤'}</span>
-                                ${student.name}
-                            </div>
-                        </td>
-                        <td>
-                            <div class="attendance-options">
-                                <div class="attendance-option present ${student.attendance === 'present' ? 'selected' : ''}" 
-                                     onclick="updateAttendance('${classId}', ${student.id}, 'present')">มา</div>
-                                <div class="attendance-option absent ${student.attendance === 'absent' ? 'selected' : ''}" 
-                                     onclick="updateAttendance('${classId}', ${student.id}, 'absent')">ขาด</div>
-                                <div class="attendance-option late ${student.attendance === 'late' ? 'selected' : ''}" 
-                                     onclick="updateAttendance('${classId}', ${student.id}, 'late')">สาย</div>
-                                <div class="attendance-option leave ${student.attendance === 'leave' ? 'selected' : ''}" 
-                                     onclick="updateAttendance('${classId}', ${student.id}, 'leave')">ลา</div>
-                            </div>
-                        </td>
-                        <td>
-                            <span class="leave-counter">${student.leaveCount}/${student.maxLeaves}</span>
-                        </td>
-                    `;
-                    
-                    studentTableBody.appendChild(row);
-                });
-            }
-            
-            // อัพเดทแท็บตารางเรียน
-            const scheduleClassElement = document.getElementById('schedule-class');
-            if (scheduleClassElement) {
-                scheduleClassElement.textContent = `ม.${classId}`;
-            }
-            
-            // ตั้งค่ารูปภาพตารางเรียน
-            const scheduleImageElement = document.getElementById('class-schedule-image');
-            if (scheduleImageElement && DATA.scheduleImages[classId]) {
-                scheduleImageElement.src = DATA.scheduleImages[classId];
-            }
-            
-            // อัพเดทแท็บกิจกรรม
-            const activitiesClassElement = document.getElementById('activities-class');
-            if (activitiesClassElement) {
-                activitiesClassElement.textContent = `ม.${classId}`;
-            }
-            updateClassActivitiesList(classId);
-            
-            // เริ่มต้นที่แท็บรายชื่อนักเรียน
-            switchTab('attendance');
-            
-            // บันทึกชั้นเรียนที่เลือกอยู่
-            appData.selectedClass = classId;
-        }
+            studentTableBody.appendChild(row);
+        });
+    }
+    
+    // อัพเดทแท็บตารางเรียน
+    const scheduleClassElement = document.getElementById('schedule-class');
+    if (scheduleClassElement) {
+        scheduleClassElement.textContent = `ม.${classId}`;
+    }
+    
+    // ตั้งค่ารูปภาพตารางเรียน
+    const scheduleImageElement = document.getElementById('class-schedule-image');
+    if (scheduleImageElement && DATA.scheduleImages[classId]) {
+        scheduleImageElement.src = DATA.scheduleImages[classId];
+    }
+    
+    // อัพเดทแท็บกิจกรรม
+    const activitiesClassElement = document.getElementById('activities-class');
+    if (activitiesClassElement) {
+        activitiesClassElement.textContent = `ม.${classId}`;
+    }
+    updateClassActivitiesList(classId);
+    
+    // เริ่มต้นที่แท็บรายชื่อนักเรียน
+    switchTab('attendance');
+    
+    // บันทึกชั้นเรียนที่เลือกอยู่
+    appData.selectedClass = classId;
+}
         
         // ซ่อนรายชื่อนักเรียน
         function hideStudentList() {
@@ -2136,6 +2169,7 @@ function toggleScheduleImage() {
             });
         });
     </script>
+    <script src="script.js"></script>
 </body>
 </html>
 
