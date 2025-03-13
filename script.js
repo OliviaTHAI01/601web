@@ -124,6 +124,78 @@ function showStudentCardByTeacher(studentId, classId) {
     }
 }
 
+// สร้างข้อมูลนักเรียนสมมุติ
+function generateMockStudents() {
+    // ชื่อผู้ชายไทย
+    const boyFirstNames = [
+        "ธนากร", "ภาคิน", "ปิยะ", "ณัฐวุฒิ", "กิตติพงศ์", "วรเมธ", "อภิวัฒน์", "ธีรเดช", "พงศธร", "จิรายุ",
+        "กฤษณะ", "ศุภณัฐ", "ชานนท์", "ณัฐวุฒิ", "ภาสกร", "อนุชา", "ทักษิณ", "สมศักดิ์", "รัชชานนท์", "วิชาญ"
+    ];
+    
+    // ชื่อผู้หญิงไทย
+    const girlFirstNames = [
+        "นภัสสร", "กัญญา", "พิมพ์ชนก", "ณิชา", "อรุณี", "มินตรา", "พิชญา", "ปาริชาติ", "ศิริพร", "กมลชนก",
+        "วรรณวิสา", "ชุติมา", "ปิยะธิดา", "ศิริรัตน์", "ณัฐิดา", "อัญชลี", "ชลธิชา", "สุชาดา", "ธัญญา", "ศิริพร"
+    ];
+    
+    // นามสกุลไทย
+    const lastNames = [
+        "แสงสว่าง", "วงศ์สุวรรณ", "พรมมา", "ไชยเดช", "มีสุข", "ศรีวิชัย", "บุญเรือง", "คำดี", "บุญมี", "ใจดี",
+        "สมานชาติ", "ภักดี", "สกุลทอง", "สุขสวัสดิ์", "ดวงดี", "วิชัยวงศ์", "ศักดิ์เพชร", "จันทร์แก้ว", "สุนทรภู่", "ขาวสะอาด",
+        "วงศ์ประเสริฐ", "คงคา", "ดวงจันทร์", "นารี", "เรืองรอง", "เลิศชัย", "สิริมา", "สุขเกษม", "ทองคำ", "รักสงบ"
+    ];
+    
+    // สร้างข้อมูลนักเรียนสำหรับแต่ละห้อง
+    DATA.classes.forEach(classInfo => {
+        const classId = classInfo.id;
+        
+        // สร้างอาร์เรย์นักเรียนหากยังไม่มี
+        if (!appData.students[classId]) {
+            appData.students[classId] = [];
+        }
+        
+        // กำหนดจำนวนนักเรียนในห้องเรียนนี้ (สุ่มระหว่าง 10-20 คน)
+        const numStudents = Math.floor(Math.random() * 11) + 10; // 10-20 คน
+        
+        // สร้างนักเรียนแต่ละคน
+        for (let i = 0; i < numStudents; i++) {
+            // สุ่มเพศ (50/50)
+            const isBoy = Math.random() > 0.5;
+            
+            // สุ่มชื่อตามเพศ
+            const firstName = isBoy 
+                ? boyFirstNames[Math.floor(Math.random() * boyFirstNames.length)]
+                : girlFirstNames[Math.floor(Math.random() * girlFirstNames.length)];
+                
+            // สุ่มนามสกุล
+            const lastName = lastNames[Math.floor(Math.random() * lastNames.length)];
+            
+            // สร้างรหัสนักเรียน 5 หลัก
+            const studentId = (60000 + Math.floor(Math.random() * 10000)).toString();
+            
+            // สุ่ม emoji สำหรับโปรไฟล์
+            const profileEmoji = DATA.emojiList[Math.floor(Math.random() * DATA.emojiList.length)];
+            
+            // สร้างข้อมูลนักเรียน
+            const student = {
+                id: Date.now() + i, // สร้าง ID ที่ไม่ซ้ำกัน
+                name: `${firstName} ${lastName}`,
+                studentId: studentId,
+                class: classId,
+                profileEmoji: profileEmoji,
+                attendance: 'present', // ค่าเริ่มต้น
+                leaveCount: Math.floor(Math.random() * 5), // สุ่มจำนวนการลา 0-4 ครั้ง
+                maxLeaves: 10
+            };
+            
+            // เพิ่มนักเรียนเข้าในอาร์เรย์
+            appData.students[classId].push(student);
+        }
+    });
+    
+    console.log("สร้างข้อมูลนักเรียนสมมุติเรียบร้อยแล้ว");
+}
+
 /**
  * ฟังก์ชันสำหรับปุ่มดาวน์โหลด (ตัวอย่าง)
  * สามารถปรับแต่งตามความต้องการ
