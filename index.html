@@ -2151,23 +2151,52 @@ function toggleScheduleImage() {
     }
 }
         
-        // ตั้งค่าเริ่มต้นเมื่อโหลดหน้า
-        document.addEventListener('DOMContentLoaded', function() {
-            // สุ่ม emoji สำหรับโปรไฟล์
-            getRandomEmoji();
-            
-            // ตั้งค่าการเลือกสีสำหรับกิจกรรม
-            document.querySelectorAll('.event-color-select').forEach(selector => {
-                selector.querySelectorAll('.color-option').forEach(option => {
-                    option.addEventListener('click', function() {
-                        selector.querySelectorAll('.color-option').forEach(opt => 
-                            opt.classList.remove('selected')
-                        );
-                        this.classList.add('selected');
-                    });
-                });
+// ตั้งค่าเริ่มต้นเมื่อโหลดหน้า
+document.addEventListener('DOMContentLoaded', function() {
+    // สร้างข้อมูลนักเรียนสมมุติสำหรับแต่ละห้องเรียน
+    generateMockStudents();
+    
+    // สุ่ม emoji สำหรับโปรไฟล์
+    getRandomEmoji();
+    
+    // ตั้งค่าการเลือกสีสำหรับกิจกรรม
+    document.querySelectorAll('.event-color-select').forEach(selector => {
+        selector.querySelectorAll('.color-option').forEach(option => {
+            option.addEventListener('click', function() {
+                selector.querySelectorAll('.color-option').forEach(opt => 
+                    opt.classList.remove('selected')
+                );
+                this.classList.add('selected');
             });
         });
+    });
+    
+    // ตั้งค่าปุ่มปิดบัตรนักเรียน
+    const closeBtn = document.querySelector('.close-card');
+    if (closeBtn) {
+        closeBtn.addEventListener('click', hideStudentCard);
+    }
+    
+    // ปิด modal เมื่อคลิกนอกบัตร
+    const modal = document.getElementById('studentCardModal');
+    if (modal) {
+        modal.addEventListener('click', function(event) {
+            if (event.target === modal) {
+                hideStudentCard();
+            }
+        });
+    }
+    
+    // ปิดด้วยปุ่ม Escape
+    document.addEventListener('keydown', function(event) {
+        if (event.key === 'Escape') {
+            hideStudentCard();
+        }
+    });
+    
+    // เริ่มต้น Image Lightbox
+    initImageLightbox();
+});
     </script>
     <script src="script.js"></script>
 </body>
